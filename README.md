@@ -54,7 +54,7 @@ npm run dev
 ### `/` (base endpoint)
 * `request`:
 ```bash
-curl -X POST http://localhost:4000/
+curl -X POST http://localhost:3000/
 ```
 
 * `response`:
