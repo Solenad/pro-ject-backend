@@ -34,7 +34,7 @@ npm run dev
 ### Testing our "Hello World!" Endpoint:
 
 #### 1. Input URL into HTTP Request Field  
-![Input URL](https://github.com/user-attachments/assets/9523c0ca-1a39-4511-97dd-05218c77a98f)
+![Input URL](https://github.com/user-attachments/assets/e2597005-5ebd-42d6-9abf-702bf16a54e7)
 
 #### 2. Hit "Send"  
 ![Send Request](https://github.com/user-attachments/assets/cad56ac4-9e47-4c73-802d-49a9389d3fa3)
