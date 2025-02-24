@@ -1,4 +1,4 @@
-# pro-ject-backend
+![image](https://github.com/user-attachments/assets/47555307-93d2-44b9-b392-29f134e1e4db)![image](https://github.com/user-attachments/assets/4e0945e3-2b09-4b9e-87e4-dea91ac9a5aa)# pro-ject-backend
 [CCAPDEV] Pro-Ject backend
 
 This repository contains the backend for Group 11's project, which is a forum website (Pro-Ject).
@@ -31,6 +31,21 @@ npm run dev
 ### Postman
 
 Use Postman to test HTTP requests.
+
+**Testing our "Hello World!" endpoint:**
+
+1. Input URL into HTTP request field
+![image](https://github.com/user-attachments/assets/9523c0ca-1a39-4511-97dd-05218c77a98f)
+
+2. Hit "Send"
+![image](https://github.com/user-attachments/assets/cad56ac4-9e47-4c73-802d-49a9389d3fa3)
+
+**NOTE: Do not forget to set Header to Content-Type: application/json for JSON responses and requests**
+![image](https://github.com/user-attachments/assets/4e1c03f3-8364-42b5-92d0-fde6e02ffcc3)
+
+**NOTE: Do not forget to input body if requesting with JSON**
+![image](https://github.com/user-attachments/assets/8131ebec-fc28-4bc1-bef3-38647866bd00)
+
 
 ## **Endpoints**
 
