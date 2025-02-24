@@ -1,0 +1,51 @@
+{
+  "name": "pro-ject-backend",
+  "version": "1.0.0",
+  "description": "[CCAPDEV] Pro-Ject backend",
+  "main": "index.js",
+  "type": "script",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roedzn/pro-ject-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@editorjs/editorjs": "^2.30.7",
+    "axios": "^1.7.9",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "docker": "^1.0.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "gridfs-stream": "^1.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.13.1",
+    "mongoose": "^8.10.1",
+    "multer": "^1.4.4",
+    "multer-gridfs-storage": "^5.0.2",
+    "mysql2": "^3.12.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-google-oidc": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/passport": "^1.0.17",
+    "nodemon": "^3.1.7",
+    "prettier": "^3.3.3"
+  },
+  "bugs": {
+    "url": "https://github.com/roedzn/pro-ject-backend/issues"
+  },
+  "homepage": "https://github.com/roedzn/pro-ject-backend#readme"
+}
