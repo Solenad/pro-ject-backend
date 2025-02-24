@@ -34,16 +34,16 @@ Use Postman to test HTTP requests.
 
 **Testing our "Hello World!" endpoint:**
 
-1. Input URL into HTTP request field
+1. Input URL into HTTP request field 
 ![image](https://github.com/user-attachments/assets/9523c0ca-1a39-4511-97dd-05218c77a98f)
 
-2. Hit "Send"
+2. Hit "Send"  
 ![image](https://github.com/user-attachments/assets/cad56ac4-9e47-4c73-802d-49a9389d3fa3)
 
-**NOTE: Do not forget to set Header to Content-Type: application/json for JSON responses and requests**
+**NOTE: Do not forget to set Header to Content-Type: application/json for JSON responses and requests**  
 ![image](https://github.com/user-attachments/assets/4e1c03f3-8364-42b5-92d0-fde6e02ffcc3)
 
-**NOTE: Do not forget to input body if requesting with JSON**
+**NOTE: Do not forget to input body if requesting with JSON**  
 ![image](https://github.com/user-attachments/assets/8131ebec-fc28-4bc1-bef3-38647866bd00)
 
 
