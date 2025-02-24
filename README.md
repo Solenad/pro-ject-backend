@@ -28,23 +28,24 @@ npm run dev
   Pro-ject server is running on 4000
 ```
 
-### Postman
+## Using Postman to Test HTTP Requests
 
-Use Postman to test HTTP requests.
+### Testing our "Hello World!" Endpoint:
 
-**Testing our "Hello World!" endpoint:**
+#### 1. Input URL into HTTP Request Field  
+![Input URL](https://github.com/user-attachments/assets/9523c0ca-1a39-4511-97dd-05218c77a98f)
 
-1. Input URL into HTTP request field 
-![image](https://github.com/user-attachments/assets/9523c0ca-1a39-4511-97dd-05218c77a98f)
+#### 2. Hit "Send"  
+![Send Request](https://github.com/user-attachments/assets/cad56ac4-9e47-4c73-802d-49a9389d3fa3)
 
-2. Hit "Send"  
-![image](https://github.com/user-attachments/assets/cad56ac4-9e47-4c73-802d-49a9389d3fa3)
+---
 
-**NOTE: Do not forget to set Header to Content-Type: application/json for JSON responses and requests**  
-![image](https://github.com/user-attachments/assets/4e1c03f3-8364-42b5-92d0-fde6e02ffcc3)
+### Important Notes:
+- **Set Header:** Ensure that the request includes `Content-Type: application/json` for JSON responses and requests.  
+  ![Set Header](https://github.com/user-attachments/assets/4e1c03f3-8364-42b5-92d0-fde6e02ffcc3)
 
-**NOTE: Do not forget to input body if requesting with JSON**  
-![image](https://github.com/user-attachments/assets/8131ebec-fc28-4bc1-bef3-38647866bd00)
+- **Include a Body for JSON Requests:** If your request requires JSON data, input the body properly.  
+  ![JSON Body](https://github.com/user-attachments/assets/8131ebec-fc28-4bc1-bef3-38647866bd00)
 
 
 ## **Endpoints**
