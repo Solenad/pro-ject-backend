@@ -31,3 +31,16 @@ npm run dev
 ### Postman
 
 Use Postman to test HTTP requests.
+
+## **Endpoints**
+
+### `/` (base endpoint)
+* `request`:
+```bash
+curl -X POST http://localhost:4000/
+```
+
+* `response`:
+```bash
+Hello World!
+```
