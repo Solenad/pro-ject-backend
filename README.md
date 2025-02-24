@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/47555307-93d2-44b9-b392-29f134e1e4db)![image](https://github.com/user-attachments/assets/4e0945e3-2b09-4b9e-87e4-dea91ac9a5aa)# pro-ject-backend
+# pro-ject-backend
 [CCAPDEV] Pro-Ject backend
 
 This repository contains the backend for Group 11's project, which is a forum website (Pro-Ject).
