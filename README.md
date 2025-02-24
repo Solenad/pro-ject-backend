@@ -8,6 +8,7 @@ Techstack:
 - MongoDB
 
 **NOTE: Use ES6 for NodeJS (EcmaScript 2015)**
+**NOTE: Use standard HTTP status for responses**
 
 ## **Usage**
 > [!IMPORTANT]
