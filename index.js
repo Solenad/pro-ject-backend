@@ -7,6 +7,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import "dotenv/config";
+import router from "./routes/routes.js";
 import mongoose from "mongoose";
 
 // our express server instance
@@ -21,6 +22,8 @@ mongoose
   .then(function () {
     console.log(`Connected to MongoDB: ${mongoose.connection.name}`);
   });
+
+app.use("/", router);
 
 const PORT = process.env.PORT || 3000;
 
