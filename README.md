@@ -16,6 +16,15 @@ Techstack:
 > ```bash
 > npm install
 > ```
+>
+> **NOTE: Setup `.env`**
+> This is where your environment variables go:
+>
+> 1. Create a new text file and name it ".env"
+> 2. Check our messenger GC for variables
+>
+> **DO NOT PUSH THE .env FILE**
+> Ensure that it is included in .gitignore
 
 1. `Run the program`
 ```bash
