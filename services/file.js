@@ -1,17 +1,6 @@
 import Image from "../models/Image.js";
-import { v2 as cloudinary } from "cloudinary";
+import cloudinary from "../middleware/storage.js";
 import "dotenv/config";
-
-// Cloudinary config
-const cloud_name = process.env.CLOUD_NAME;
-const api_key = process.env.CLOUD_API_KEY;
-const api_secret = process.env.CLOUD_API_SECRET;
-
-cloudinary.config({
-  cloud_name: cloud_name,
-  api_key: api_key,
-  api_secret: api_secret,
-});
 
 /**
  * POST "/upload"
@@ -19,11 +8,22 @@ cloudinary.config({
  * @function uploadSingleImage()
  */
 export const uploadSingleImage = async function (req, res) {
+  const file_name = req.file.originalname.split(".")[0];
+  const date = new Date(Date.now())
+    .toLocaleDateString("en-US", {
+      timeZone: "Asia/Singapore",
+      month: "2-digit",
+      day: "2-digit",
+      year: "numeric",
+    })
+    .replace(/\//g, "-");
+
   const options = {
     use_filename: true,
     unique_filename: true,
     overwrite: true,
     folder: "images",
+    public_id: `${file_name}_${date}`,
   };
 
   if (!req.file) {
