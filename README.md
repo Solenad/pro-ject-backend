@@ -14,7 +14,8 @@ Techstack:
 
 ## **Usage**
 
-> [!IMPORTANT] > **NOTE: What to do after `git clone`**
+> [!IMPORTANT]
+> **NOTE: What to do after `git clone`**
 >
 > ```bash
 > npm install
