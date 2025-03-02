@@ -7,6 +7,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import "dotenv/config";
+import router from "./routes/routes.js";
 import mongoose from "mongoose";
 
 // our express server instance
@@ -21,6 +22,22 @@ mongoose
   .then(function () {
     console.log(`Connected to MongoDB: ${mongoose.connection.name}`);
   });
+
+mongoose.connection.once("open", async function () {
+  try {
+    const collections = await mongoose.connection.db
+      .listCollections()
+      .toArray();
+    console.log("Available collections in MongoDB: ");
+    collections.forEach(function (collection) {
+      console.log(`- ${collection.name}`);
+    });
+  } catch (err) {
+    console.error("Error listing collections: ", err.message);
+  }
+});
+
+app.use("/", router);
 
 const PORT = process.env.PORT || 3000;
 

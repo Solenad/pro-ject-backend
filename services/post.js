@@ -27,7 +27,7 @@ export const getPosts = async function (req, res) {
   const posts = await Post.find({});
 
   if (!posts) {
-    res
+    return res
       .status(404)
       .json({ message: "Pro-Ject currently has no posts to display." });
   }
