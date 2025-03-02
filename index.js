@@ -23,6 +23,20 @@ mongoose
     console.log(`Connected to MongoDB: ${mongoose.connection.name}`);
   });
 
+mongoose.connection.once("open", async function () {
+  try {
+    const collections = await mongoose.connection.db
+      .listCollections()
+      .toArray();
+    console.log("Available collections in MongoDB: ");
+    collections.forEach(function (collection) {
+      console.log(`- ${collection.name}`);
+    });
+  } catch (err) {
+    console.error("Error listing collections: ", err.message);
+  }
+});
+
 app.use("/", router);
 
 const PORT = process.env.PORT || 3000;

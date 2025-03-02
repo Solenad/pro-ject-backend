@@ -1,5 +1,5 @@
 import express from "express";
-import { upload } from "../config/storage.js";
+import { upload } from "../middleware/storage.js";
 import { createPost, getPosts } from "../services/post.js";
 import { uploadSingleImage } from "../services/file.js";
 
