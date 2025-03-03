@@ -12,7 +12,7 @@ const postSchema = mongoose.Schema({
   },
   created_at: { type: Date, required: true },
   content: { type: String, required: true },
-  image: { data: Buffer, imgType: String },
+  image: String,
 });
 
 export default mongoose.model("Post", postSchema);
