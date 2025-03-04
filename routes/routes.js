@@ -1,13 +1,18 @@
 import express from "express";
 import { upload } from "../middleware/storage.js";
-import { createPost, getPosts } from "../services/post.js";
+import {
+  createPost,
+  getPosts,
+  getPost,
+  editPost,
+  deletePost,
+} from "../services/post.js";
 import {
   uploadSingleImage,
   getImageById,
   deleteImageById,
 } from "../services/file.js";
-import { userLogIn, userSignUp } from "../services/authController.js";
-
+import { userLogIn, userSignUp } from "../services/auth.js";
 
 const router = express.Router();
 

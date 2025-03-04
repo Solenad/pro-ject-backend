@@ -2,8 +2,6 @@ import asyncHandler from "express-async-handler"; // no need for try-catch
 import Auth from "../models/Auth.js";
 
 export const userLogIn = asyncHandler(async (req, res) => {
-  console.log("Body Content: ", req.body); // for debugging
-
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -28,8 +26,6 @@ export const userLogIn = asyncHandler(async (req, res) => {
 });
 
 export const userSignUp = asyncHandler(async (req, res) => {
-  console.log("Body Content: ", req.body); // for debugging
-
   const { email, password, username } = req.body;
 
   if (!email || !password || !username) {
