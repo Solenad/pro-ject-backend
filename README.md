@@ -9,16 +9,26 @@ Techstack:
 - NodeJS
 - MongoDB
 
-**NOTE: Use ES6 for NodeJS (EcmaScript 2015)**  
+**NOTE: Use ES6 standard for NodeJS (EcmaScript 2015)**  
 **NOTE: Use standard HTTP status for responses**
 
 ## **Usage**
 
-> [!IMPORTANT] > **NOTE: What to do after `git clone`**
+> [!IMPORTANT]
+> **NOTE: What to do after `git clone`**
 >
 > ```bash
 > npm install
 > ```
+>
+> **NOTE: Setup `.env`**
+> This is where your environment variables go:
+>
+> 1. Create a new text file and name it ".env"
+> 2. Check our messenger GC for variables
+>
+> **DO NOT PUSH THE .env FILE**
+> Ensure that it is included in .gitignore
 
 1. `Run the program`
 

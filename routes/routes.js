@@ -6,6 +6,8 @@ import {
   getImageById,
   deleteImageById,
 } from "../services/file.js";
+import { userLogIn, userSignUp } from "../services/authController.js";
+
 
 const router = express.Router();
 
@@ -21,5 +23,9 @@ router.get("/", getPosts);
 router.post("/upload", upload.single("image"), uploadSingleImage);
 router.get("/image/:id", getImageById);
 router.delete("/image/:id", deleteImageById);
+
+// auth endpoints
+router.post("/auth", userLogIn);
+router.post("/auth", userSignUp);
 
 export default router;
