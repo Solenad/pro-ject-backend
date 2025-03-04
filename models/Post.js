@@ -21,8 +21,8 @@ const postSchema = mongoose.Schema({
   upvotes: { type: Number, default: 0, required: true },
   downvotes: { type: Number, default: 0, required: true },
   comment_ids: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  ], //replace to comment when comment schema is created
+    { type: mongoose.Schema.Types.ObjectId, ref: "Comment", required: true },
+  ],
   //admin view
   upvote_users_id: [
     { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
