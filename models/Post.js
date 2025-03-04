@@ -5,7 +5,11 @@
 import mongoose, { set } from "mongoose";
 
 const postSchema = mongoose.Schema({
-  author_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, //must be verified user to post
+  author_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  }, //must be verified user to post
   title: { type: String, required: true },
   deadline: {
     progress: { type: String, required: true },
@@ -14,12 +18,18 @@ const postSchema = mongoose.Schema({
   created_at: { type: Date, required: true },
   content: { type: String, required: true },
   image: { data: Buffer, imgType: String },
-  upvotes: { type: Number, default: 0, required: true},
-  downvotes: { type: Number, default: 0, required: true},
-  comment_ids: [{type: mongoose.Schema.Types.ObjectId, ref: "User", required: true}],//replace to comment when comment schema is created
+  upvotes: { type: Number, default: 0, required: true },
+  downvotes: { type: Number, default: 0, required: true },
+  comment_ids: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  ], //replace to comment when comment schema is created
   //admin view
-  upvote_users_id: [{type: mongoose.Schema.Types.ObjectId, ref: "User", required: true}],
-  downvote_users_id: [{type: mongoose.Schema.Types.ObjectId, ref: "User", required: true}]
+  upvote_users_id: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  ],
+  downvote_users_id: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  ],
 });
 
 export default mongoose.model("Post", postSchema);

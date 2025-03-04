@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 
 // LOGIN => email and password
 // SIGNUP => all fields
+// *implement auto-assigned user_id for each new user created
 const authSchema = new mongoose.Schema(
   {
     email: {
