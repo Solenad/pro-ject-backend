@@ -1,7 +1,7 @@
-const asyncHandler = require("express-async-handler"); // no need for try-catch
-const Auth = require("../models/Auth");
+import asyncHandler from "express-async-handler"; // no need for try-catch
+import Auth from "../models/Auth.js";
 
-const userLogIn = asyncHandler(async (req, res) => {
+export const userLogIn = asyncHandler(async (req, res) => {
   console.log("Body Content: ", req.body); // for debugging
 
   const { email, password } = req.body;
@@ -27,7 +27,7 @@ const userLogIn = asyncHandler(async (req, res) => {
   });
 });
 
-const userSignUp = asyncHandler(async (req, res) => {
+export const userSignUp = asyncHandler(async (req, res) => {
   console.log("Body Content: ", req.body); // for debugging
 
   const { email, password, username } = req.body;
@@ -62,5 +62,3 @@ const userSignUp = asyncHandler(async (req, res) => {
     },
   });
 });
-
-module.exports = { userLogIn, userSignUp };

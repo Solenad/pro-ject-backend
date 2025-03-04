@@ -2,7 +2,6 @@ import express from "express";
 import { upload } from "../middleware/storage.js";
 import { createPost, getPosts } from "../services/post.js";
 import { uploadSingleImage, getImage } from "../services/file.js";
-
 import { userLogIn, userSignUp } from "../services/authController.js";
 
 const router = express.Router();
