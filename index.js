@@ -19,17 +19,17 @@ app.use(cors());
 
 mongoose
   .connect(process.env.MONGO_URI, { dbName: process.env.DB_NAME })
-  .then(function () {
+  .then(function() {
     console.log(`Connected to MongoDB: ${mongoose.connection.name}`);
   });
 
-mongoose.connection.once("open", async function () {
+mongoose.connection.once("open", async function() {
   try {
     const collections = await mongoose.connection.db
       .listCollections()
       .toArray();
     console.log("Available collections in MongoDB: ");
-    collections.forEach(function (collection) {
+    collections.forEach(function(collection) {
       console.log(`- ${collection.name}`);
     });
   } catch (err) {
@@ -41,6 +41,6 @@ app.use("/", router);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, function () {
+app.listen(PORT, function() {
   console.log(`Pro-ject server is running on ${PORT}`);
 });
