@@ -17,7 +17,7 @@ const postSchema = mongoose.Schema({
   },
   created_at: { type: Date, required: true },
   content: { type: String, required: true },
-  image: { data: Buffer, imgType: String },
+  image: String,
   upvotes: { type: Number, default: 0, required: true },
   downvotes: { type: Number, default: 0, required: true },
   comment_ids: [

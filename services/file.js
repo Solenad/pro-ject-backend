@@ -63,7 +63,14 @@ export const uploadSingleImage = async function (req, res) {
   }
 };
 
-export const getImage = async function (req, res) {
+/**
+ * Retrieves an image URL by its MongoDB ID.
+ *
+ * @route GET /image/:id
+ * @param {string} req.params.id - The MongoDB ID of the image.
+ * @returns {Object} JSON response containing the image URL or an error message.
+ */
+export const getImageById = async function (req, res) {
   try {
     const { id } = req.params;
     const image = await Image.findById(id);
@@ -74,6 +81,30 @@ export const getImage = async function (req, res) {
 
     return res.status(200).json({ image_url: image.url });
   } catch (err) {
-    res.status(500).json({ message: "Error getting image.", err });
+    res
+      .status(500)
+      .json({ message: "Error getting image.", error: err.message });
+  }
+};
+
+export const deleteImageById = async function (req, res) {
+  try {
+    const { id } = req.params;
+    const image = await Image.findById(id);
+
+    if (!image) {
+      return res.status(404).json({ message: "Image not found." });
+    }
+
+    await cloudinary.uploader.destroy(image.public_id);
+    await Image.findByIdAndDelete(id);
+
+    if (!Image.findById()) {
+      return res.status(500).json({ message: "Image still found in MongoDB" });
+    }
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error gettimg image.", error: err.message });
   }
 };
