@@ -7,8 +7,6 @@ import {
   deleteImageById,
 } from "../services/file.js";
 import { userLogIn, userSignUp } from "../services/authController.js";
-import { db } from "../models/Comment.js";
-import Post from "../models/Post.js";
 
 
 const router = express.Router();
