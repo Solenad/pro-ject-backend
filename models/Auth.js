@@ -1,3 +1,5 @@
+// Andrei's Part
+
 import mongoose from "mongoose";
 
 // LOGIN => email and password
@@ -18,7 +20,7 @@ const authSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // auto record when signing up
+    timestamps: true, // record when signing up
   }
 );
 

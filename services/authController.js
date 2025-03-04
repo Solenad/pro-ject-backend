@@ -1,12 +1,11 @@
-const asyncHandler = require("express-async-handler"); // no need for try catch block
+const asyncHandler = require("express-async-handler"); // no need for try-catch
 const Auth = require("../models/Auth");
 
 const userLogIn = asyncHandler(async (req, res) => {
-  console.log("Body Content: ", req.body); // Debugging log
+  console.log("Body Content: ", req.body); // for debugging
 
   const { email, password } = req.body;
 
-  // if any of the field is empty
   if (!email || !password) {
     res.status(400);
     throw new Error("All fields must be filled.");
@@ -16,7 +15,7 @@ const userLogIn = asyncHandler(async (req, res) => {
 
   if (!user || user.password !== password) {
     res.status(401);
-    throw new Error("Invalid email or password.");
+    throw new Error("Invalid credentials.");
   }
 
   res.status(200).json({
@@ -28,4 +27,40 @@ const userLogIn = asyncHandler(async (req, res) => {
   });
 });
 
-const signUp = (module.exports = { userLogIn });
+const userSignUp = asyncHandler(async (req, res) => {
+  console.log("Body Content: ", req.body); // for debugging
+
+  const { email, password, username } = req.body;
+
+  if (!email || !password || !username) {
+    res.status(400);
+    throw new Error("All fields must be filled.");
+  }
+
+  // Check if email already exists
+  const emailExists = await Auth.findOne({ email });
+  if (emailExists) {
+    res.status(400);
+    throw new Error("Email is already in use.");
+  }
+
+  // Check if username already exists
+  const usernameExists = await Auth.findOne({ username });
+  if (usernameExists) {
+    res.status(400);
+    throw new Error("Username is already taken.");
+  }
+
+  const newUser = await Auth.create({ email, password, username });
+
+  res.status(201).json({
+    message: "Signup successful",
+    user: {
+      email: newUser.email,
+      password: newUser.password,
+      username: newUser.username,
+    },
+  });
+});
+
+module.exports = { userLogIn, userSignUp };
