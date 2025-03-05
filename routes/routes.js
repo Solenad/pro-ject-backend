@@ -21,7 +21,7 @@ router.get("/test", function (req, res) {
 });
 
 // posts endpoints
-router.post("/", createPost);
+router.post("/post", createPost);
 router.get("/", getPosts);
 
 // file endpoints

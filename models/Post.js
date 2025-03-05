@@ -12,7 +12,11 @@ const postSchema = mongoose.Schema({
   }, //must be verified user to post
   title: { type: String, required: true },
   deadline: {
-    progress: { type: String, required: true },
+    progress: {
+      type: String,
+      enum: ["Started", "In Progress", "Finished", "Deployed"],
+      required: true,
+    },
     deadline_length: { type: Number, required: true },
   },
   created_at: { type: Date, required: true },
