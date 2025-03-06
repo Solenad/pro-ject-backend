@@ -1,13 +1,18 @@
 import express from "express";
 import { upload } from "../middleware/storage.js";
-import { createPost, getPosts } from "../services/post.js";
+import {
+  createPost,
+  getPosts,
+  getPost,
+  editPost,
+  deletePost,
+} from "../services/post.js";
 import {
   uploadSingleImage,
   getImageById,
   deleteImageById,
 } from "../services/file.js";
-import { userLogIn, userSignUp } from "../services/authController.js";
-
+import { userLogIn, userSignUp } from "../services/auth.js";
 
 const router = express.Router();
 
@@ -16,8 +21,11 @@ router.get("/test", function (req, res) {
 });
 
 // posts endpoints
-router.post("/", createPost);
+router.post("/post", createPost);
 router.get("/", getPosts);
+router.get("/:id", getPost);
+router.put("/:id", editPost);
+router.delete("/:id", deletePost);
 
 // file endpoints
 router.post("/upload", upload.single("image"), uploadSingleImage);

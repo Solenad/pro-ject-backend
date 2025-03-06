@@ -5,14 +5,17 @@
 import mongoose, { set } from "mongoose";
 
 const postSchema = mongoose.Schema({
-  author_id: {
+  /*author_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true,
-  }, //must be verified user to post
+  }, //must be verified user to post */
   title: { type: String, required: true },
   deadline: {
-    progress: { type: String, required: true },
+    progress: {
+      type: String,
+      enum: ["Started", "In Progress", "Finished", "Deployed"],
+      required: true,
+    },
     deadline_length: { type: Number, required: true },
   },
   created_at: { type: Date, required: true },
@@ -20,16 +23,7 @@ const postSchema = mongoose.Schema({
   image: String,
   upvotes: { type: Number, default: 0, required: true },
   downvotes: { type: Number, default: 0, required: true },
-  comment_ids: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "Comment", required: true },
-  ],
-  //admin view
-  upvote_users_id: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  ],
-  downvote_users_id: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  ],
+  comment_ids: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 
 export default mongoose.model("Post", postSchema);
