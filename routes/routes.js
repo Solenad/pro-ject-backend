@@ -23,6 +23,9 @@ router.get("/test", function (req, res) {
 // posts endpoints
 router.post("/post", createPost);
 router.get("/", getPosts);
+router.get("/:id", getPost);
+router.put("/:id", editPost);
+router.delete("/:id", deletePost);
 
 // file endpoints
 router.post("/upload", upload.single("image"), uploadSingleImage);
