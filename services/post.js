@@ -24,7 +24,10 @@ export const createPost = async function (req, res) {
 };
 
 export const getPosts = async function (req, res) {
-  const posts = await Post.find({});
+  const page = req.query.p || 0;
+  const postsPerPage = 5;
+
+  const posts = await Post.find({}).skip(page * postsPerPage).limit(postsPerPage);
 
   if (!posts) {
     return res
