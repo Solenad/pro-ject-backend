@@ -40,7 +40,7 @@ export const getPosts = async function (req, res) {
   const total_posts = await Post.countDocuments();
   const total_pages = Math.ceil(total_posts / 5);
 
-  res.status(200).json({ posts, total_pages });
+  res.status(200).json({ posts, total_pages, current_page: page });
 };
 
 export const getPost = async function (req, res) {
