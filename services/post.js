@@ -27,7 +27,9 @@ export const getPosts = async function (req, res) {
   const page = req.query.p || 0;
   const postsPerPage = 5;
 
-  const posts = await Post.find({}).skip(page * postsPerPage).limit(postsPerPage);
+  const posts = await Post.find({})
+    .skip(page * postsPerPage)
+    .limit(postsPerPage);
 
   if (!posts) {
     return res
@@ -35,7 +37,10 @@ export const getPosts = async function (req, res) {
       .json({ message: "Pro-Ject currently has no posts to display." });
   }
 
-  res.status(200).json(posts);
+  const total_posts = await Post.countDocuments();
+  const total_pages = Math.ceil(total_posts / 5);
+
+  res.status(200).json({ posts, total_pages });
 };
 
 export const getPost = async function (req, res) {
