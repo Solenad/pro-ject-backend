@@ -62,6 +62,8 @@ export const editPost = async function (req, res) {
     const { post_id } = req.params;
 
     const post = await Post.find(post_id);
+    //for debug
+    console.log(post_id)
 
     if (!post) {
       return res.status(404).json({ message: "Post is not found." });
