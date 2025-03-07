@@ -24,7 +24,7 @@ export const createPost = async function (req, res) {
 };
 
 export const getPosts = async function (req, res) {
-  const page = req.query.p || 1;
+  const page = req.query.p || 0;
   const postsPerPage = 5;
 
   const posts = await Post.find({})
