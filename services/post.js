@@ -47,9 +47,7 @@ export const getPosts = async function (req, res) {
 export const getPost = async function (req, res) {
   try {
     const { id } = req.params;
-    const post = await Post.find(id);
-    console.log(id)
-    console.log(post)
+    const post = await Post.findById(id);
 
     if (!post) {
       return res
@@ -69,7 +67,7 @@ export const editPost = async function (req, res) {
   try {
     const { id } = req.params;
 
-    const post = await Post.find(id);
+    const post = await Post.findById(id);
     //for debug
     console.log(id)
 
@@ -91,7 +89,7 @@ export const deletePost = async function (req, res) {
   try {
     const { id } = req.params;
 
-    const post = await Post.find(id);
+    const post = await Post.findById(id);
 
     if (!post) {
       return res.status(404).json({ message: "Post is not found." });
