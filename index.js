@@ -15,13 +15,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
-);
+app.use(cors());
 
 mongoose
   .connect(process.env.MONGO_URI, { dbName: process.env.DB_NAME })
