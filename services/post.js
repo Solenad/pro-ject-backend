@@ -48,6 +48,8 @@ export const getPost = async function (req, res) {
   try {
     const { id } = req.params;
     const post = await Post.find(id);
+    console.log(id)
+    console.log(post)
 
     if (!post) {
       return res
