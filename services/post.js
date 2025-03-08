@@ -46,8 +46,8 @@ export const getPosts = async function (req, res) {
 
 export const getPost = async function (req, res) {
   try {
-    const { post_id } = req.params;
-    const post = Post.find(post_id);
+    const { id } = req.params;
+    const post = Post.find(id);
 
     if (!post) {
       return res
@@ -65,17 +65,17 @@ export const getPost = async function (req, res) {
 
 export const editPost = async function (req, res) {
   try {
-    const { post_id } = req.params;
+    const { id } = req.params;
 
-    const post = await Post.find(post_id);
+    const post = await Post.find(id);
     //for debug
-    console.log(post_id)
+    console.log(id)
 
     if (!post) {
       return res.status(404).json({ message: "Post is not found." });
     }
 
-    const edited_post = await Post.findByIdAndUpdate(post_id);
+    const edited_post = await Post.findByIdAndUpdate(id);
 
     res.status(200).json({ message: "Post edited.", edited_post });
   } catch (err) {
@@ -87,17 +87,17 @@ export const editPost = async function (req, res) {
 
 export const deletePost = async function (req, res) {
   try {
-    const { post_id } = req.params;
+    const { id } = req.params;
 
-    const post = await Post.find(post_id);
+    const post = await Post.find(id);
 
     if (!post) {
       return res.status(404).json({ message: "Post is not found." });
     }
 
-    await Post.findByIdAndDelete(post_id);
+    await Post.findByIdAndDelete(id);
 
-    if (await Post.find(post_id))
+    if (await Post.find(id))
       res.status(200).json({ message: "Post edited.", edited_post });
   } catch (err) {
     return res
