@@ -5,13 +5,14 @@ import Post from "../models/Post.js";
 
 export const createPost = async function (req, res) {
   try {
-    const { title, deadline, created_at, content } = req.body;
+    const { title, deadline, created_at, content, image } = req.body;
 
     const new_post = new Post({
       title: title,
       deadline: deadline,
       created_at: created_at,
       content: content,
+      image: image || null,
     });
 
     const saved_post = await new_post.save();

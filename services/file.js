@@ -41,7 +41,7 @@ export const uploadSingleImage = async function (req, res) {
           } else {
             resolve(upload_result);
           }
-        }
+        },
       );
       upload_stream.end(req.file.buffer);
     });
