@@ -47,7 +47,7 @@ export const getPosts = async function (req, res) {
 export const getPost = async function (req, res) {
   try {
     const { id } = req.params;
-    const post = Post.find(id);
+    const post = await Post.find(id);
 
     if (!post) {
       return res
