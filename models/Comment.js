@@ -1,7 +1,3 @@
-// Andrei
-
-// TO-DO: Implement corresponding routes and controller to handle comments
-
 const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema({
@@ -22,6 +18,12 @@ const commentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Comment",
     default: null, // Nullable to allow top-level comments
+  },
+  comment_id: {
+    // id of the current comment
+    // Explicitly store the auto-generated _id to comment_id for readability
+    type: mongoose.Schema.Types.ObjectId,
+    unique: true, // Ensure it's unique
   },
   content: {
     // string content of the comment
@@ -49,6 +51,14 @@ const commentSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+});
+
+// Middleware to ensure `comment_id` is always equal to `_id`
+commentSchema.pre("save", function (next) {
+  if (!this.comment_id) {
+    this.comment_id = this._id; // Assign _id to comment_id
+  }
+  next();
 });
 
 module.exports = mongoose.model("Comment", commentSchema);
