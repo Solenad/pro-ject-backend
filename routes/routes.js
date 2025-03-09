@@ -13,12 +13,18 @@ import {
   deleteImageById,
 } from "../services/file.js";
 import { userLogIn, userSignUp } from "../services/auth.js";
+import { createUser, getUser, getUsers } from "../services/user.js";
 
 const router = express.Router();
 
 router.get("/test", function (req, res) {
   res.status(200).json("Hello, world!");
 });
+
+//user endpoints
+router.post("/users", createUser);
+router.get("/users", getUsers);
+router.get("/users/:id", getUser);
 
 // posts endpoints
 router.post("/post", createPost);
@@ -35,5 +41,7 @@ router.delete("/image/:id", deleteImageById);
 // auth endpoints
 router.post("/auth", userLogIn);
 router.post("/auth", userSignUp);
+
+
 
 export default router;
