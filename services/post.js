@@ -97,8 +97,7 @@ export const deletePost = async function (req, res) {
 
     await Post.findByIdAndDelete(id);
 
-    if (await Post.find(id))
-      res.status(200).json({ message: "Post deleted."});
+    return res.status(200).json({ message: "Post deleted."});
   } catch (err) {
     return res
       .status(500)
