@@ -66,16 +66,16 @@ export const getPost = async function (req, res) {
 export const editPost = async function (req, res) {
   try {
     const { id } = req.params;
+    const newData = req.body;
 
     const post = await Post.findById(id);
     //for debug
-    console.log(id)
 
     if (!post) {
       return res.status(404).json({ message: "Post is not found." });
     }
 
-    const edited_post = await Post.findByIdAndUpdate(id);
+    const edited_post = await Post.findByIdAndUpdate(id, newData, {new: true});
 
     res.status(200).json({ message: "Post edited.", edited_post });
   } catch (err) {
@@ -98,10 +98,10 @@ export const deletePost = async function (req, res) {
     await Post.findByIdAndDelete(id);
 
     if (await Post.find(id))
-      res.status(200).json({ message: "Post edited.", edited_post });
+      res.status(200).json({ message: "Post deleted."});
   } catch (err) {
     return res
       .status(500)
-      .json({ message: "Error editing post.", error: err.message });
+      .json({ message: "Error deleting post.", error: err.message });
   }
 };
