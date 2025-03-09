@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler"; // no need for try-catch
 import Auth from "../models/Auth.js";
 
+// => /auth/login
 export const userLogIn = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 

@@ -39,9 +39,7 @@ router.get("/image/:id", getImageById);
 router.delete("/image/:id", deleteImageById);
 
 // auth endpoints
-router.post("/auth", userLogIn);
-router.post("/auth", userSignUp);
-
-
+router.post("/auth/login", userLogIn); // from auth to /auth/login
+router.post("/auth/signup", userSignUp); // from auth to /auth/signup
 
 export default router;
