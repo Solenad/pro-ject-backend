@@ -23,6 +23,7 @@ export const userLogIn = asyncHandler(async (req, res) => {
       username: user.username,
     },
   });
+  
 });
 
 export const userSignUp = asyncHandler(async (req, res) => {
