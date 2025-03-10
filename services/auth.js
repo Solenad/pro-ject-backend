@@ -13,8 +13,7 @@ export const userLogIn = asyncHandler(async (req, res) => {
   const user = await Auth.findOne({ email });
 
   if (!user || user.password !== password) {
-    res.status(401);
-    throw new Error("Invalid credentials.");
+    res.status(401).json({ message: "!! Invalid email or password !!" });
   }
 
   res.status(200).json({
@@ -24,15 +23,13 @@ export const userLogIn = asyncHandler(async (req, res) => {
       username: user.username,
     },
   });
-  
 });
 
 export const userSignUp = asyncHandler(async (req, res) => {
   const { email, password, username } = req.body;
 
   if (!email || !password || !username) {
-    res.status(400);
-    throw new Error("All fields must be filled.");
+    res.status(400).json({ message: "All fields must be filled." });
   }
 
   // Check if email already exists
