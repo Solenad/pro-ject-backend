@@ -11,7 +11,7 @@ export const userLogIn = asyncHandler(async (req, res) => {
   }
 
   const user = await Auth.findOne({ email });
-
+  
   if (!user || user.password !== password) {
     res.status(401);
     throw new Error("Invalid credentials.");
