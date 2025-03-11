@@ -12,8 +12,8 @@ import {
   getImageById,
   deleteImageById,
 } from "../services/file.js";
-import { userLogIn, userSignUp } from "../services/auth.js";
-import { createUser, getUser, getUsers } from "../services/user.js";
+// import { userLogIn, userSignUp } from "../services/auth.js";
+import { userSignUp, userLogIn, getUser, getUsers } from "../services/user.js";
 
 // set endpoints for comment functions
 import {
@@ -34,7 +34,8 @@ router.get("/test", function (req, res) {
 });
 
 //user endpoints
-router.post("/users", createUser);
+router.post("/user/signup", userSignUp); // from createUser (user) to userSignUp (transfered from auth)
+router.post("/user/login", userLogIn); // from auth as well
 router.get("/users", getUsers);
 router.get("/users/:id", getUser);
 
@@ -50,11 +51,6 @@ router.post("/upload", upload.single("image"), uploadSingleImage);
 router.get("/image/:id", getImageById);
 router.delete("/image/:id", deleteImageById);
 
-// auth endpoints
-router.post("/auth/login", userLogIn); // from auth to /auth/login
-router.post("/auth/signup", userSignUp); // from auth to /auth/signup
-
-// comment endpoints
 // comment endpoints
 router.post("/comments", addParentComment); // Add a new parent comment
 router.get("/comments/:post_id", getParentComments); // Get top-level comments for a post

@@ -1,5 +1,3 @@
-// Andrei's Part
-
 import asyncHandler from "express-async-handler"; // no need for try-catch
 import Comment from "../models/Comment.js";
 
