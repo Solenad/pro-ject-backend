@@ -50,7 +50,7 @@ export const userLogIn = asyncHandler(async (req, res) => {
 
   if (!user || user.user_password !== user_password) {
     res.status(401).json({ message: "Invalid email or password!" });
-    return;
+    throw new Error("Invalid email or password!");
   }
 
   res.status(200).json({
