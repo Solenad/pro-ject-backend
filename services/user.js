@@ -10,14 +10,12 @@ export const userSignUp = asyncHandler(async (req, res) => {
     return;
   }
 
-  // Check if email already exists
   const emailExists = await User.findOne({ user_email });
   if (emailExists) {
     res.status(400).json({ message: "Email is already in use." });
     throw new Error("Email is already in use.");
   }
 
-  // Check if username already exists
   const usernameExists = await User.findOne({ user_name });
   if (usernameExists) {
     res.status(400).json({ message: "Username is already taken." });
@@ -26,7 +24,7 @@ export const userSignUp = asyncHandler(async (req, res) => {
 
   const newUser = await User.create({ user_email, user_password, user_name });
 
-  // password is included for testing
+  // NOTE: password is included for testing (temporary)
   res.status(201).json({
     message: "Signup successful",
     user: {
@@ -51,7 +49,7 @@ export const userLogIn = asyncHandler(async (req, res) => {
   const user = await User.findOne({ user_email });
 
   if (!user || user.user_password !== user_password) {
-    res.status(401).json({ message: "Invalid email or password !!" });
+    res.status(401).json({ message: "Invalid email or password!" });
     return;
   }
 
