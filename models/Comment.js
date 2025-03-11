@@ -22,8 +22,7 @@ const commentSchema = new mongoose.Schema({
   comment_id: {
     // id of the current comment
     // Explicitly store the auto-generated _id to comment_id for readability
-    type: mongoose.Schema.Types.ObjectId,
-    unique: true, // Ensure it's unique
+    type: mongoose.Schema.Types.ObjectId, // Removed `unique: true`
   },
   content: {
     // string content of the comment
@@ -53,12 +52,19 @@ const commentSchema = new mongoose.Schema({
   },
 });
 
-// Middleware to ensure `comment_id` is always equal to `_id`
 commentSchema.pre("save", function (next) {
   if (!this.comment_id) {
     this.comment_id = this._id; // Assign _id to comment_id
   }
   next();
+});
+
+commentSchema.post("save", function (error, doc, next) {
+  if (error.name === "MongoServerError" && error.code === 11000) {
+    next(new Error("Duplicate comment ID detected."));
+  } else {
+    next(error);
+  }
 });
 
 export default mongoose.model("Comment", commentSchema);

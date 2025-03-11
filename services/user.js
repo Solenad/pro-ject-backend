@@ -1,7 +1,6 @@
 import User from "../models/User.js";
 import asyncHandler from "express-async-handler";
 
-// from recent auth
 export const userSignUp = asyncHandler(async (req, res) => {
   const { user_email, user_password, user_name } = req.body;
 
