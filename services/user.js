@@ -65,34 +65,6 @@ export const userLogIn = asyncHandler(async (req, res) => {
   });
 });
 
-/*
-export const createUser = async function (req, res) {
-  try {
-    const { user_name, user_tag, user_bio, is_admin } = req.body;
-
-    const newUser = new User({
-      user_name,
-      user_tag,
-      user_bio,
-      is_admin,
-    });
-
-    await newUser.save();
-    res.status(201).json({
-      message: "User created",
-      user: {
-        email: newUser.email,
-        password: newUser.password,
-        username: newUser.username,
-        _id: newUser._id,
-      },
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-*/
-
 export const getUsers = async function (req, res) {
   try {
     const users = await User.find();
