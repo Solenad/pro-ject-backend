@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const commentSchema = new mongoose.Schema(
+const commentsSchema = new mongoose.Schema(
   {
     user_id: {
       // id of the commenter
@@ -17,7 +17,7 @@ const commentSchema = new mongoose.Schema(
     parent_comment_id: {
       // if null then parent comment, else a reply comment
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Comment",
+      ref: "Comments",
       default: null, // Nullable to allow top-level comments
     },
     content: {
@@ -50,4 +50,4 @@ const commentSchema = new mongoose.Schema(
   { timestamps: true } // Auto-generated createdAt and updatedAt
 );
 
-export default mongoose.model("Comment", commentSchema);
+export default mongoose.model("Comments", commentsSchema);

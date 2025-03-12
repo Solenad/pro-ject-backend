@@ -71,7 +71,7 @@ router.get("/comments/replies/:comment_id", getReplyComments); // Get replies fo
 router.put("/comments/:comment_id", editComment); // Edit a comment
 router.delete("/comments/:comment_id", deleteComment); // Delete a comment
 
-router.patch("/comments/:comment_id/upvote", upvoteComment); // Upvote a comment
-router.patch("/comments/:comment_id/downvote", downvoteComment); // Downvote a comment
+router.patch("/upvote/:comment_id", upvoteComment); // Upvote a comment
+router.patch("/downvote/:comment_id", downvoteComment); // Downvote a comment
 
 export default router;

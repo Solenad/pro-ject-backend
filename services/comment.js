@@ -1,5 +1,17 @@
 import asyncHandler from "express-async-handler"; // no need for try-catch
-import Comment from "../models/Comment.js";
+import Comments from "../models/Comments.js";
+
+// Drop the index
+(async () => {
+  try {
+    await Comments.collection.dropIndex("comment_id_1");
+    console.log("Index dropped successfully");
+  } catch (err) {
+    if (err.codeName !== "IndexNotFound") {
+      console.error("Error dropping index:", err.message);
+    }
+  }
+})();
 
 // comment on a post
 export const addParentComment = asyncHandler(async (req, res) => {
@@ -9,7 +21,7 @@ export const addParentComment = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "All fields are required." }); // for testing
   }
 
-  const newComment = new Comment({
+  const newComment = new Comments({
     user_id,
     post_id,
     content,
@@ -31,7 +43,7 @@ export const getParentComments = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Post ID is required" });
   }
 
-  const comments = await Comment.find({ post_id, parent_comment_id: null })
+  const comments = await Comments.find({ post_id, parent_comment_id: null })
     .sort({ created_at: -1 }) // newest to oldest
     .populate("user_id", "user_name") // user details
     .lean();
@@ -50,7 +62,7 @@ export const addReplyComment = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Invalid post or comment ID" });
   }
 
-  const parentComment = await Comment.findById(parent_comment_id);
+  const parentComment = await Comments.findById(parent_comment_id);
   if (!parentComment) {
     return res.status(404).json({ message: "Parent comment not found" });
   }
@@ -81,7 +93,7 @@ export const getReplyComments = asyncHandler(async (req, res) => {
     }
 
     // Find replies where parent_comment_id matches the given comment_id
-    const replies = await Comment.find({ parent_comment_id: comment_id })
+    const replies = await Comments.find({ parent_comment_id: comment_id })
       .populate("user_id", "username") // Fetch username of commenter
       .sort({ created_at: 1 });
 
@@ -101,7 +113,7 @@ export const editComment = asyncHandler(async (req, res) => {
   const { comment_id } = req.params; // change to body (depends)
   const { user_id, content } = req.body;
 
-  const comment = await Comment.findById(comment_id);
+  const comment = await Comments.findById(comment_id);
 
   if (!comment) {
     return res.status(404).json({ message: "Comment not found" });
@@ -154,7 +166,7 @@ export const upvoteComment = asyncHandler(async (req, res) => {
   const { comment_id } = req.params;
 
   // Find the comment by ID and increment upvotes
-  const updatedComment = await Comment.findByIdAndUpdate(
+  const updatedComment = await Comments.findByIdAndUpdate(
     comment_id,
     { $inc: { upvotes: 1 } }, // Increment upvotes by 1
     { new: true }
@@ -174,7 +186,7 @@ export const downvoteComment = asyncHandler(async (req, res) => {
   const { comment_id } = req.params;
 
   // Find the comment by ID and increment downvotes
-  const updatedComment = await Comment.findByIdAndUpdate(
+  const updatedComment = await Comments.findByIdAndUpdate(
     comment_id,
     { $inc: { downvotes: 1 } }, // Increment downvotes by 1
     { new: true }
@@ -192,7 +204,7 @@ export const downvoteComment = asyncHandler(async (req, res) => {
 // view all comments in all post
 export const getAllComments = async (req, res) => {
   try {
-    const comments = await Comment.find().populate("user_id", "user_name"); // Add user details;
+    const comments = await Comments.find().populate("user_id", "user_name"); // Add user details;
 
     if (!comments || comments.length === 0) {
       return res.status(404).json({ message: "No comments found" });
