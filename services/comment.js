@@ -25,7 +25,7 @@ export const addParentComment = asyncHandler(async (req, res) => {
 
 // fetch top-level comments for a post
 export const getParentComments = asyncHandler(async (req, res) => {
-  const { post_id } = req.params; // change to body (depends)
+  const { post_id } = req.params;
 
   if (!post_id) {
     return res.status(400).json({ message: "Post ID is required" });
@@ -33,7 +33,7 @@ export const getParentComments = asyncHandler(async (req, res) => {
 
   const comments = await Comment.find({ post_id, parent_comment_id: null })
     .sort({ created_at: -1 }) // newest to oldest
-    .populate("user_id", "username") // user details
+    .populate("user_id", "user_name") // user details
     .lean();
 
   res.status(200).json(comments);
@@ -71,7 +71,6 @@ export const addReplyComment = asyncHandler(async (req, res) => {
   res.status(201).json({ message: "Reply added successfully", reply });
 });
 
-// fetch replies to a specific comment
 // get the replies to the parent comment
 export const getReplyComments = asyncHandler(async (req, res) => {
   try {
@@ -189,3 +188,19 @@ export const downvoteComment = asyncHandler(async (req, res) => {
     .status(200)
     .json({ message: "Downvoted successfully", comment: updatedComment }); // for testing
 });
+
+// view all comments in all post
+export const getAllComments = async (req, res) => {
+  try {
+    const comments = await Comment.find().populate("user_id", "user_name"); // Add user details;
+
+    if (!comments || comments.length === 0) {
+      return res.status(404).json({ message: "No comments found" });
+    }
+
+    res.status(200).json(comments);
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    res.status(500).json({ message: "Failed to retrieve comments" });
+  }
+};

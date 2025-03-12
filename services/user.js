@@ -62,6 +62,7 @@ export const userLogIn = asyncHandler(async (req, res) => {
   });
 });
 
+// get all users
 export const getUsers = async function (req, res) {
   try {
     const users = await User.find();
@@ -72,6 +73,32 @@ export const getUsers = async function (req, res) {
       .json({ message: "Error fetching users", error: error.message });
   }
 };
+
+export const deleteUser = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find and delete the user
+    const user = await User.findByIdAndDelete(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "User deletion successful",
+      user: {
+        email: user.user_email,
+        username: user.user_name,
+        id: user._id,
+      },
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error deleting user", error: error.message });
+  }
+});
 
 export const getUser = async function (req, res) {
   try {
