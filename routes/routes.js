@@ -32,6 +32,7 @@ import {
   upvoteComment,
   downvoteComment,
   getAllComments,
+  getAllNumComments,
 } from "../services/comment.js";
 
 const router = express.Router();
@@ -64,6 +65,7 @@ router.get("/comments", getAllComments); // View all comments
 
 router.post("/comments/add", addParentComment); // Add a new parent comment
 router.get("/comments/post/:post_id", getParentComments); // Get top-level comments for a post
+router.get("/comment-num/:post_id",getAllNumComments); //Get num comments
 
 router.post("/comments/reply", addReplyComment); // Add a reply to a comment
 router.get("/comments/replies/:comment_id", getReplyComments); // Get replies for a comment

@@ -138,6 +138,10 @@ export const deleteComment = asyncHandler(async (req, res) => {
 
   console.log("Received DELETE request for comment ID:", comment_id);
 
+  if (!comment_id) {
+    return res.status(400).json({ message: "Comment ID is required" });
+  }
+
   const comment = await Comments.findById(comment_id);
   if (!comment) {
     return res.status(404).json({ message: "Comment not found" });
@@ -205,6 +209,18 @@ export const getAllComments = async (req, res) => {
       return res.status(404).json({ message: "No comments found" });
     }
 
+    res.status(200).json(comments);
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    res.status(500).json({ message: "Failed to retrieve comments" });
+  }
+};
+
+export const getAllNumComments = async (req, res) => {
+  const { post_id } = req.params;
+
+  try {
+    const comments = await Comments.find({ post_id, parent_comment_id: null }).countDocuments(); 
     res.status(200).json(comments);
   } catch (error) {
     console.error("Error fetching comments:", error);
