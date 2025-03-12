@@ -75,7 +75,9 @@ export const editPost = async function (req, res) {
       return res.status(404).json({ message: "Post is not found." });
     }
 
-    const edited_post = await Post.findByIdAndUpdate(id, newData, {new: true});
+    const edited_post = await Post.findByIdAndUpdate(id, newData, {
+      new: true,
+    });
 
     res.status(200).json({ message: "Post edited.", edited_post });
   } catch (err) {
@@ -97,7 +99,7 @@ export const deletePost = async function (req, res) {
 
     await Post.findByIdAndDelete(id);
 
-    return res.status(200).json({ message: "Post deleted."});
+    return res.status(200).json({ message: "Post deleted." });
   } catch (err) {
     return res
       .status(500)

@@ -23,7 +23,7 @@ const postSchema = mongoose.Schema({
   image: String,
   upvotes: { type: Number, default: 0, required: true },
   downvotes: { type: Number, default: 0, required: true },
-  comment_ids: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  comment_ids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comments" }], // change from User to Comments
 });
 
 export default mongoose.model("Post", postSchema);

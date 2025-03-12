@@ -68,8 +68,8 @@ router.get("/comments/post/:post_id", getParentComments); // Get top-level comme
 router.post("/comments/reply", addReplyComment); // Add a reply to a comment
 router.get("/comments/replies/:comment_id", getReplyComments); // Get replies for a comment
 
-router.put("/comments/:comment_id", editComment); // Edit a comment
-router.delete("/comments/:comment_id", deleteComment); // Delete a comment
+router.put("/comment/:comment_id", editComment); // Edit a comment
+router.delete("comment/delete/:comment_id", deleteComment); // Delete a comment
 
 router.patch("/upvote/:comment_id", upvoteComment); // Upvote a comment
 router.patch("/downvote/:comment_id", downvoteComment); // Downvote a comment
