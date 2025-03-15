@@ -3,7 +3,7 @@
 // - GET: /posts
 import Post from "../models/Post.js";
 
-export const createPost = async function (req, res) {
+export const createPost = async function(req, res) {
   try {
     const { title, deadline, created_at, content, image } = req.body;
 
@@ -24,7 +24,7 @@ export const createPost = async function (req, res) {
   }
 };
 
-export const getPosts = async function (req, res) {
+export const getPosts = async function(req, res) {
   const page = req.query.p || 0;
   const postsPerPage = 5;
 
@@ -44,7 +44,7 @@ export const getPosts = async function (req, res) {
   res.status(200).json({ posts, total_pages, current_page: page });
 };
 
-export const getPost = async function (req, res) {
+export const getPost = async function(req, res) {
   try {
     const { id } = req.params;
     const post = await Post.findById(id);
@@ -63,7 +63,7 @@ export const getPost = async function (req, res) {
   }
 };
 
-export const editPost = async function (req, res) {
+export const editPost = async function(req, res) {
   try {
     const { id } = req.params;
     const newData = req.body;
@@ -75,7 +75,9 @@ export const editPost = async function (req, res) {
       return res.status(404).json({ message: "Post is not found." });
     }
 
-    const edited_post = await Post.findByIdAndUpdate(id, newData, {new: true});
+    const edited_post = await Post.findByIdAndUpdate(id, newData, {
+      new: true,
+    });
 
     res.status(200).json({ message: "Post edited.", edited_post });
   } catch (err) {
@@ -85,7 +87,7 @@ export const editPost = async function (req, res) {
   }
 };
 
-export const deletePost = async function (req, res) {
+export const deletePost = async function(req, res) {
   try {
     const { id } = req.params;
 
@@ -97,10 +99,16 @@ export const deletePost = async function (req, res) {
 
     await Post.findByIdAndDelete(id);
 
-    return res.status(200).json({ message: "Post deleted."});
+    return res.status(200).json({ message: "Post deleted." });
   } catch (err) {
     return res
       .status(500)
       .json({ message: "Error deleting post.", error: err.message });
   }
 };
+
+export const votePost = async function(req, res) {
+  try {
+    const post = Post.findOne({ id: req.params.id });
+  }
+}

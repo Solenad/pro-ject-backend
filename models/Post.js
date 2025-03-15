@@ -2,7 +2,7 @@
 // Roe's part:
 // - add proper gfs and multer for image
 //Pat: adding the ids
-import mongoose, { set } from "mongoose";
+import mongoose from "mongoose";
 
 const postSchema = mongoose.Schema({
   /*author_id: {

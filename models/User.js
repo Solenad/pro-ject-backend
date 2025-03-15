@@ -1,6 +1,6 @@
 //Pat's part
 
-import mongoose, { set } from "mongoose";
+import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema({
   user_name: { type: String, required: true },
