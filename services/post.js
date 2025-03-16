@@ -114,39 +114,50 @@ export const votePost = async function (req, res) {
     const { type } = req.body;
     const post = await Post.findById(id);
 
-    const already_liked = await Like.findOne({ post_id: post.id, type });
+    const already_liked = await Like.findOne({ post_id: post.id });
 
     let upd_post;
 
     if (!already_liked) {
-      await Like.create({ post_id: post.id, type: type });
+      await Like.create({ post_id: post.id, type });
 
-      if (type == "upvote") {
-        upd_post = await Post.findByIdAndUpdate(
-          id,
-          { $inc: { upvotes: 1 } },
-          { new: true },
-        );
-      } else if (type == "downvote") {
-        upd_post = await Post.findByIdAndUpdate(
-          id,
-          { $inc: { downvotes: 1 } },
-          { new: true },
-        );
-      }
-    } else {
-      await Like.deleteOne({ _id: already_liked._id, type: type });
+      await Post.findByIdAndUpdate(
+        id,
+        { $inc: { [type == "up" ? "upvotes" : "downvotes"]: 1 } },
+        { new: true },
+      );
+    } else if (type == already_liked.type) {
+      await Like.deleteOne({ _id: already_liked._id });
 
-      if (type == "upvote") {
+      if (type == "up") {
         upd_post = await Post.findByIdAndUpdate(
           id,
           { $inc: { upvotes: -1 } },
           { new: true },
         );
-      } else if (type == "downvote") {
+      } else if (type == "down") {
         upd_post = await Post.findByIdAndUpdate(
           id,
           { $inc: { downvotes: -1 } },
+          { new: true },
+        );
+      }
+    } else if (type != already_liked.type) {
+      await Like.create({ post_id: post.id, type: type });
+      await Like.deleteOne({ _id: already_liked._id });
+
+      if (type == "up") {
+        upd_post = await Post.findByIdAndUpdate(
+          id,
+          { $inc: { upvotes: 1 } },
+          { $inc: { downvotes: -1 } },
+          { new: true },
+        );
+      } else {
+        upd_post = await Post.findByIdAndUpdate(
+          id,
+          { $inc: { upvotes: -1 } },
+          { $inc: { downvotes: 1 } },
           { new: true },
         );
       }
@@ -158,6 +169,7 @@ export const votePost = async function (req, res) {
 
     res.status(200).json(upd_post);
   } catch (err) {
+    console.log("Error: " + err.message);
     return res.status(500).json({
       message: "Error upvoting/downvoting post",
       error: err.message,
