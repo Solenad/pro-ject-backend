@@ -2,8 +2,9 @@
 // Endpoints planned:
 // - GET: /posts
 import Post from "../models/Post.js";
+import Like from "../models/Like.js";
 
-export const createPost = async function(req, res) {
+export const createPost = async function (req, res) {
   try {
     const { title, deadline, created_at, content, image } = req.body;
 
@@ -24,7 +25,7 @@ export const createPost = async function(req, res) {
   }
 };
 
-export const getPosts = async function(req, res) {
+export const getPosts = async function (req, res) {
   const page = req.query.p || 0;
   const postsPerPage = 5;
 
@@ -44,7 +45,7 @@ export const getPosts = async function(req, res) {
   res.status(200).json({ posts, total_pages, current_page: page });
 };
 
-export const getPost = async function(req, res) {
+export const getPost = async function (req, res) {
   try {
     const { id } = req.params;
     const post = await Post.findById(id);
@@ -63,7 +64,7 @@ export const getPost = async function(req, res) {
   }
 };
 
-export const editPost = async function(req, res) {
+export const editPost = async function (req, res) {
   try {
     const { id } = req.params;
     const newData = req.body;
@@ -87,7 +88,7 @@ export const editPost = async function(req, res) {
   }
 };
 
-export const deletePost = async function(req, res) {
+export const deletePost = async function (req, res) {
   try {
     const { id } = req.params;
 
@@ -107,8 +108,59 @@ export const deletePost = async function(req, res) {
   }
 };
 
-export const votePost = async function(req, res) {
+export const votePost = async function (req, res) {
   try {
-    const post = Post.findOne({ id: req.params.id });
+    const { id } = req.params;
+    const { type } = req.body;
+    const post = await Post.findById(id);
+
+    const already_liked = await Like.findOne({ post_id: post.id, type });
+
+    let upd_post;
+
+    if (!already_liked) {
+      await Like.create({ post_id: post.id, type: type });
+
+      if (type == "upvote") {
+        upd_post = await Post.findByIdAndUpdate(
+          id,
+          { $inc: { upvotes: 1 } },
+          { new: true },
+        );
+      } else if (type == "downvote") {
+        upd_post = await Post.findByIdAndUpdate(
+          id,
+          { $inc: { downvotes: 1 } },
+          { new: true },
+        );
+      }
+    } else {
+      await Like.deleteOne({ _id: already_liked._id, type: type });
+
+      if (type == "upvote") {
+        upd_post = await Post.findByIdAndUpdate(
+          id,
+          { $inc: { upvotes: -1 } },
+          { new: true },
+        );
+      } else if (type == "downvote") {
+        upd_post = await Post.findByIdAndUpdate(
+          id,
+          { $inc: { downvotes: -1 } },
+          { new: true },
+        );
+      }
+    }
+
+    if (!upd_post) {
+      return res.status(404).json({ message: "Post not found." });
+    }
+
+    res.status(200).json(upd_post);
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error upvoting/downvoting post",
+      error: err.message,
+    });
   }
-}
+};

@@ -33,7 +33,7 @@ router.get("/", getPosts);
 router.get("/:id", getPost);
 router.put("/:id", editPost);
 router.delete("/:id", deletePost);
-router.post("/:id/vote", votePost);
+router.post("/vote/:id", votePost);
 
 // file endpoints
 router.post("/upload", upload.single("image"), uploadSingleImage);
