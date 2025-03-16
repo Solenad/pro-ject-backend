@@ -119,9 +119,9 @@ export const votePost = async function (req, res) {
     let upd_post;
 
     if (!already_liked) {
-      await Like.create({ post_id: post.id, type });
+      await Like.create({ post_id: id, type });
 
-      await Post.findByIdAndUpdate(
+      upd_post = await Post.findByIdAndUpdate(
         id,
         { $inc: { [type == "up" ? "upvotes" : "downvotes"]: 1 } },
         { new: true },
@@ -129,38 +129,24 @@ export const votePost = async function (req, res) {
     } else if (type == already_liked.type) {
       await Like.deleteOne({ _id: already_liked._id });
 
-      if (type == "up") {
-        upd_post = await Post.findByIdAndUpdate(
-          id,
-          { $inc: { upvotes: -1 } },
-          { new: true },
-        );
-      } else if (type == "down") {
-        upd_post = await Post.findByIdAndUpdate(
-          id,
-          { $inc: { downvotes: -1 } },
-          { new: true },
-        );
-      }
-    } else if (type != already_liked.type) {
-      await Like.create({ post_id: post.id, type: type });
-      await Like.deleteOne({ _id: already_liked._id });
+      upd_post = await Post.findByIdAndUpdate(
+        id,
+        { $inc: { [type === "up" ? "upvotes" : "downvotes"]: -1 } },
+        { new: true },
+      );
+    } else {
+      await Like.findByIdAndUpdate(already_liked._id, { type });
 
-      if (type == "up") {
-        upd_post = await Post.findByIdAndUpdate(
-          id,
-          { $inc: { upvotes: 1 } },
-          { $inc: { downvotes: -1 } },
-          { new: true },
-        );
-      } else {
-        upd_post = await Post.findByIdAndUpdate(
-          id,
-          { $inc: { upvotes: -1 } },
-          { $inc: { downvotes: 1 } },
-          { new: true },
-        );
-      }
+      upd_post = await Post.findByIdAndUpdate(
+        id,
+        {
+          $inc: {
+            upvotes: type == "up" ? 1 : type == "down" ? -1 : 0,
+            downvotes: type == "down" ? 1 : type == "up" ? -1 : 0,
+          },
+        },
+        { new: true },
+      );
     }
 
     if (!upd_post) {
