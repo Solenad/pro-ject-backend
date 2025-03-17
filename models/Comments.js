@@ -47,7 +47,7 @@ const commentsSchema = new mongoose.Schema(
       min: 0, // Prevent negative reply count
     },
   },
-  { timestamps: true } // Auto-generated createdAt and updatedAt
+  { timestamps: true }, // Auto-generated createdAt and updatedAt
 );
 
 export default mongoose.model("Comments", commentsSchema);

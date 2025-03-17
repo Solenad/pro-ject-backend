@@ -2,6 +2,7 @@
 // Endpoints planned:
 // - GET: /posts
 import Post from "../models/Post.js";
+import Like from "../models/Like.js";
 
 export const createPost = async function (req, res) {
   try {
@@ -104,5 +105,60 @@ export const deletePost = async function (req, res) {
     return res
       .status(500)
       .json({ message: "Error deleting post.", error: err.message });
+  }
+};
+
+export const votePost = async function (req, res) {
+  try {
+    const { id } = req.params;
+    const { type } = req.body;
+    const post = await Post.findById(id);
+
+    const already_liked = await Like.findOne({ post_id: post.id });
+
+    let upd_post;
+
+    if (!already_liked) {
+      await Like.create({ post_id: id, type });
+
+      upd_post = await Post.findByIdAndUpdate(
+        id,
+        { $inc: { [type == "up" ? "upvotes" : "downvotes"]: 1 } },
+        { new: true },
+      );
+    } else if (type == already_liked.type) {
+      await Like.deleteOne({ _id: already_liked._id });
+
+      upd_post = await Post.findByIdAndUpdate(
+        id,
+        { $inc: { [type === "up" ? "upvotes" : "downvotes"]: -1 } },
+        { new: true },
+      );
+    } else {
+      await Like.findByIdAndUpdate(already_liked._id, { type });
+
+      upd_post = await Post.findByIdAndUpdate(
+        id,
+        {
+          $inc: {
+            upvotes: type == "up" ? 1 : type == "down" ? -1 : 0,
+            downvotes: type == "down" ? 1 : type == "up" ? -1 : 0,
+          },
+        },
+        { new: true },
+      );
+    }
+
+    if (!upd_post) {
+      return res.status(404).json({ message: "Post not found." });
+    }
+
+    res.status(200).json(upd_post);
+  } catch (err) {
+    console.log("Error: " + err.message);
+    return res.status(500).json({
+      message: "Error upvoting/downvoting post",
+      error: err.message,
+    });
   }
 };
