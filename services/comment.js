@@ -227,3 +227,15 @@ export const getAllNumComments = async (req, res) => {
     res.status(500).json({ message: "Failed to retrieve comments" });
   }
 };
+
+export const getCommentsByUser = async (req, res) => {
+  const { user_id } = req.params;
+
+  try {
+    const comments = await Comments.find({ user_id });
+    res.status(200).json(comments);
+  } catch (error){
+    console.error("Error fetching comments:", error);
+    res.status(500).json({ message: "Failed to retrieve comments" });
+  }
+};

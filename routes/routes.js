@@ -7,6 +7,7 @@ import {
   editPost,
   deletePost,
   votePost,
+  getPostsByUser
 } from "../services/post.js";
 import {
   uploadSingleImage,
@@ -34,6 +35,7 @@ import {
   downvoteComment,
   getAllComments,
   getAllNumComments,
+  getCommentsByUser,
 } from "../services/comment.js";
 
 const router = express.Router();
@@ -45,9 +47,11 @@ router.get("/test", function (req, res) {
 //user endpoints
 router.post("/user/signup", userSignUp); // from createUser (user) to userSignUp (transfered from auth)
 router.post("/user/login", userLogIn); // from auth as well
-router.get("/users", getUsers); // get all users
-router.get("/users/:id", getUser);
+router.get("/user", getUsers); // get all users
+router.get("/user/:id", getUser);
 router.delete("/user/delete/:id", deleteUser);
+router.get("/user/:id/comments", getCommentsByUser); //gets comments by user
+router.get("/user/:id/posts", getPostsByUser);
 
 // posts endpoints
 router.post("/post", createPost);
