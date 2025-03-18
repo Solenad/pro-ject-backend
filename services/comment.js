@@ -4,7 +4,7 @@ import Post from "../models/Post.js";
 import User from "../models/User.js";
 import mongoose from "mongoose";
 
-// Drop the index
+/* Drop the index
 (async () => {
   try {
     await Comments.collection.dropIndex("comment_id_1");
@@ -15,6 +15,7 @@ import mongoose from "mongoose";
     }
   }
 })();
+*/
 
 // comment on a post
 export const addParentComment = asyncHandler(async (req, res) => {
@@ -264,7 +265,9 @@ export const getCommentsByUser = async (req, res) => {
 
     if (comments.length === 0) {
       console.warn("No comments found for user:", user_id);
-      return res.status(404).json({ message: "No comments found for the specified user." });
+      return res
+        .status(404)
+        .json({ message: "No comments found for the specified user." });
     }
 
     res.status(200).json(comments);
