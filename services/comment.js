@@ -31,7 +31,11 @@ export const addParentComment = asyncHandler(async (req, res) => {
     content,
   });
 
-  await newComment.save();
+  const saved_comment = await newComment.save();
+
+  const user = await User.findById(user_id);
+  user.comment_ids.push(saved_comment._id);
+  await user.save();
 
   res.status(201).json({
     message: "Comment added successfully",

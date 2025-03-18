@@ -19,6 +19,7 @@ const postSchema = mongoose.Schema({
     deadline_length: { type: Number, required: true },
   },
   created_at: { type: Date, required: true },
+  created_by: { type: mongoose.Schema.Types.ObjectId, ref: "User"},
   content: { type: String, required: true },
   image: String,
   upvotes: { type: Number, default: 0, required: true },
