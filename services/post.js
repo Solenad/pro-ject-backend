@@ -110,35 +110,37 @@ export const deletePost = async function (req, res) {
 
 export const getPostsByUser = async function (req, res) {
   try {
-      const page = Number(req.query.p) || 0;
-      const postsPerPage = 5;
-      const userId = req.query.userId; // Get userId from query parameters
+    const page = Number(req.query.p) || 0;
+    const postsPerPage = 5;
+    const userId = req.query.userId; // Get userId from query parameters
 
-      // Build the query object
-      const query = userId ? { userId } : {};
+    // Build the query object
+    const query = userId ? { userId } : {};
 
-      // Get filtered and paginated posts
-      const posts = await Post.find(query)
-          .skip(page * postsPerPage)
-          .limit(postsPerPage);
+    // Get filtered and paginated posts
+    const posts = await Post.find(query)
+      .skip(page * postsPerPage)
+      .limit(postsPerPage);
 
-      // Check if posts were found
-      if (!posts || posts.length === 0) {
-          return res.status(404).json({ message: "No posts found for the specified user." });
-      }
+    // Check if posts were found
+    if (!posts || posts.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No posts found for the specified user." });
+    }
 
-      // Count total filtered posts for pagination
-      const total_posts = await Post.countDocuments(query);
-      const total_pages = Math.ceil(total_posts / postsPerPage);
+    // Count total filtered posts for pagination
+    const total_posts = await Post.countDocuments(query);
+    const total_pages = Math.ceil(total_posts / postsPerPage);
 
-      // Send response with filtered posts and pagination info
-      res.status(200).json({ posts, total_pages, current_page: page });
+    // Send response with filtered posts and pagination info
+    res.status(200).json({ posts, total_pages, current_page: page });
   } catch (error) {
-      console.error("Error fetching posts:", error);
-      res.status(500).json({ message: "Server error while fetching posts." });
+    console.error("Error fetching posts:", error);
+    res.status(500).json({ message: "Server error while fetching posts." });
   }
 };
-    
+
 export const votePost = async function (req, res) {
   try {
     const { id } = req.params;
@@ -155,7 +157,7 @@ export const votePost = async function (req, res) {
       upd_post = await Post.findByIdAndUpdate(
         id,
         { $inc: { [type == "up" ? "upvotes" : "downvotes"]: 1 } },
-        { new: true },
+        { new: true }
       );
     } else if (type == already_liked.type) {
       await Like.deleteOne({ _id: already_liked._id });
@@ -163,7 +165,7 @@ export const votePost = async function (req, res) {
       upd_post = await Post.findByIdAndUpdate(
         id,
         { $inc: { [type === "up" ? "upvotes" : "downvotes"]: -1 } },
-        { new: true },
+        { new: true }
       );
     } else {
       await Like.findByIdAndUpdate(already_liked._id, { type });
@@ -176,7 +178,7 @@ export const votePost = async function (req, res) {
             downvotes: type == "down" ? 1 : type == "up" ? -1 : 0,
           },
         },
-        { new: true },
+        { new: true }
       );
     }
 
@@ -191,6 +193,5 @@ export const votePost = async function (req, res) {
       message: "Error upvoting/downvoting post",
       error: err.message,
     });
-
   }
 };

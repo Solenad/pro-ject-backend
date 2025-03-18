@@ -45,3 +45,23 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, function () {
   console.log(`Pro-ject server is running on ${PORT}`);
 });
+
+/* REMOVE AFTER DEBUGGING
+        // Drop "auths" collection
+        try {
+            await mongoose.connection.db.dropCollection('auths');
+            console.log('auths collection deleted');
+        } catch (error) {
+            console.log('auths collection not found or already deleted');
+        }
+
+        // Drop "comments" collection
+        try {
+            await mongoose.connection.db.dropCollection('comments');
+            console.log('comments collection deleted');
+        } catch (error) {
+            console.log('comments collection not found or already deleted');
+        }
+
+
+*/

@@ -1,6 +1,8 @@
 import asyncHandler from "express-async-handler"; // no need for try-catch
 import Comments from "../models/Comment.js";
 import Post from "../models/Post.js";
+import User from "../models/User.js";
+import mongoose from "mongoose";
 
 // Drop the index
 (async () => {
@@ -136,6 +138,11 @@ export const editComment = asyncHandler(async (req, res) => {
 export const deleteComment = asyncHandler(async (req, res) => {
   const { comment_id } = req.params;
 
+  // remove after checking
+  if (!mongoose.Types.ObjectId.isValid(comment_id)) {
+    return res.status(400).json({ message: "Invalid Comment ID" });
+  }
+
   console.log("Received DELETE request for comment ID:", comment_id);
 
   if (!comment_id) {
@@ -220,7 +227,10 @@ export const getAllNumComments = async (req, res) => {
   const { post_id } = req.params;
 
   try {
-    const comments = await Comments.find({ post_id, parent_comment_id: null }).countDocuments(); 
+    const comments = await Comments.find({
+      post_id,
+      parent_comment_id: null,
+    }).countDocuments();
     res.status(200).json(comments);
   } catch (error) {
     console.error("Error fetching comments:", error);
@@ -234,7 +244,7 @@ export const getCommentsByUser = async (req, res) => {
   try {
     const comments = await Comments.find({ user_id });
     res.status(200).json(comments);
-  } catch (error){
+  } catch (error) {
     console.error("Error fetching comments:", error);
     res.status(500).json({ message: "Failed to retrieve comments" });
   }

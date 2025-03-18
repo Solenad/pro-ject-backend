@@ -123,4 +123,3 @@ export const getUser = async function (req, res) {
       .json({ message: "Error getting user.", error: error.message });
   }
 };
-

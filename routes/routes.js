@@ -7,7 +7,7 @@ import {
   editPost,
   deletePost,
   votePost,
-  getPostsByUser
+  getPostsByUser,
 } from "../services/post.js";
 import {
   uploadSingleImage,
@@ -71,13 +71,14 @@ router.get("/comments", getAllComments); // View all comments
 
 router.post("/comments/add", addParentComment); // Add a new parent comment
 router.get("/comments/post/:post_id", getParentComments); // Get top-level comments for a post
-router.get("/comment-num/:post_id",getAllNumComments); //Get num comments
+router.get("/comment-num/:post_id", getAllNumComments); //Get num comments
 
 router.post("/comments/reply", addReplyComment); // Add a reply to a comment
 router.get("/comments/replies/:comment_id", getReplyComments); // Get replies for a comment
 
-router.put("/comment/:comment_id", editComment); // Edit a comment
-router.delete("comment/delete/:comment_id", deleteComment); // Delete a comment
+// fix edit and delete
+router.put("/comment/edit/:comment_id", editComment); // Edit a comment
+router.delete("/comment/delete/:comment_id", deleteComment); // Delete a comment
 
 router.patch("/upvote/:comment_id", upvoteComment); // Upvote a comment
 router.patch("/downvote/:comment_id", downvoteComment); // Downvote a comment
