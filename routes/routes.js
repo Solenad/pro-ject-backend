@@ -14,7 +14,7 @@ import {
   getImageById,
   deleteImageById,
 } from "../services/file.js";
-// import { userLogIn, userSignUp } from "../services/auth.js";
+
 import {
   userSignUp,
   userLogIn,
@@ -23,7 +23,6 @@ import {
   getUsers,
 } from "../services/user.js";
 
-// set endpoints for comment functions
 import {
   addParentComment,
   getParentComments,
@@ -76,9 +75,9 @@ router.get("/comment-num/:post_id", getAllNumComments); //Get num comments
 router.post("/comments/reply", addReplyComment); // Add a reply to a comment
 router.get("/comments/replies/:comment_id", getReplyComments); // Get replies for a comment
 
-// fix edit and delete
+// fix edit
 router.put("/comment/edit/:comment_id", editComment); // Edit a comment
-router.delete("/comment/delete/:comment_id", deleteComment); // Delete a comment
+router.delete("/comment/delete/:comment_id", deleteComment); // Delete a comment, working as of march 18
 
 router.patch("/upvote/:comment_id", upvoteComment); // Upvote a comment
 router.patch("/downvote/:comment_id", downvoteComment); // Downvote a comment
