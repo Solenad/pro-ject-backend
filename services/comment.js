@@ -113,16 +113,27 @@ export const getReplyComments = asyncHandler(async (req, res) => {
 
 // edit a comment by id
 export const editComment = asyncHandler(async (req, res) => {
-  const { comment_id } = req.params; // change to body (depends)
+  const { comment_id } = req.params;
   const { user_id, content } = req.body;
 
+  if (!user_id) {
+    return res.status(400).json({ message: "User ID is required" });
+  }
+
+  if (!content || content.trim() === "") {
+    return res.status(400).json({ message: "Content cannot be empty" });
+  }
+
   const comment = await Comments.findById(comment_id);
+
+  console.log("Request user_id:", user_id);
+  console.log("Comment owner user_id:", comment.user_id.toString());
 
   if (!comment) {
     return res.status(404).json({ message: "Comment not found" });
   }
 
-  if (comment.user_id.toString() !== user_id) {
+  if (String(comment.user_id) !== String(user_id)) {
     return res
       .status(403)
       .json({ message: "Unauthorized to edit this comment" });
