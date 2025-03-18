@@ -6,7 +6,8 @@ import {
   getPost,
   editPost,
   deletePost,
-  getPostsByUser,
+  votePost,
+  getPostsByUser
 } from "../services/post.js";
 import {
   uploadSingleImage,
@@ -58,6 +59,7 @@ router.get("/", getPosts);
 router.get("/:id", getPost);
 router.put("/:id", editPost);
 router.delete("/:id", deletePost);
+router.post("/vote/:id", votePost);
 
 // file endpoints
 router.post("/upload", upload.single("image"), uploadSingleImage);

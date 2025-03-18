@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler"; // no need for try-catch
-import Comments from "../models/Comments.js";
+import Comments from "../models/Comment.js";
 import Post from "../models/Post.js";
 
 // Drop the index
