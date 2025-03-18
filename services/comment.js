@@ -232,9 +232,22 @@ export const getCommentsByUser = async (req, res) => {
   const { user_id } = req.params;
 
   try {
-    const comments = await Comments.find({ user_id });
+    // Log the incoming user_id
+    console.log("Received user_id:", user_id);
+
+    // Try using both possible field names for the query
+    const comments = await Comments.find({ userId: user_id });
+
+    // Log the result to see what was found
+    console.log("Fetched comments:", comments);
+
+    if (comments.length === 0) {
+      console.warn("No comments found for user:", user_id);
+      return res.status(404).json({ message: "No comments found for the specified user." });
+    }
+
     res.status(200).json(comments);
-  } catch (error){
+  } catch (error) {
     console.error("Error fetching comments:", error);
     res.status(500).json({ message: "Failed to retrieve comments" });
   }

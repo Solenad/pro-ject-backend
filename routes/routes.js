@@ -53,19 +53,6 @@ router.delete("/user/delete/:id", deleteUser);
 router.get("/user/:id/comments", getCommentsByUser); //gets comments by user
 router.get("/user/:id/posts", getPostsByUser);
 
-// posts endpoints
-router.post("/post", createPost);
-router.get("/", getPosts);
-router.get("/:id", getPost);
-router.put("/:id", editPost);
-router.delete("/:id", deletePost);
-router.post("/vote/:id", votePost);
-
-// file endpoints
-router.post("/upload", upload.single("image"), uploadSingleImage);
-router.get("/image/:id", getImageById);
-router.delete("/image/:id", deleteImageById);
-
 // Comment endpoints
 router.get("/comments", getAllComments); // View all comments
 
@@ -81,5 +68,20 @@ router.delete("comment/delete/:comment_id", deleteComment); // Delete a comment
 
 router.patch("/upvote/:comment_id", upvoteComment); // Upvote a comment
 router.patch("/downvote/:comment_id", downvoteComment); // Downvote a comment
+
+// posts endpoints
+router.post("/post", createPost);
+router.get("/", getPosts);
+router.get("/:id", getPost);
+router.put("/:id", editPost);
+router.delete("/:id", deletePost);
+router.post("/vote/:id", votePost);
+
+// file endpoints
+router.post("/upload", upload.single("image"), uploadSingleImage);
+router.get("/image/:id", getImageById);
+router.delete("/image/:id", deleteImageById);
+
+
 
 export default router;
