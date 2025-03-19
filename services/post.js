@@ -218,3 +218,49 @@ export const votePost = async function (req, res) {
     });
   }
 };
+
+export const getUpvotesByUser = async function (req, res) {
+  const { userId } = req.params;
+
+  try {
+    // Find all likes of type "up" by the user and populate the post data
+    const likes = await Like.find({ user_id: userId, type: "up" }).populate({
+      path: "post_id",
+      populate: {
+        path: "author_id",
+        select: "username profilePicture",
+      },
+    });
+
+    // Extract the posts from the likes
+    const upvotedPosts = likes.map((like) => like.post_id);
+
+    res.status(200).json({ posts: upvotedPosts });
+  } catch (error) {
+    console.error("Error fetching upvoted posts:", error.message);
+    res.status(500).json({ message: "Server error while fetching upvoted posts." });
+  }
+};
+
+export const getDownvotesByUser = async function (req, res) {
+  const { userId } = req.params;
+
+  try {
+    // Find all likes of type "up" by the user and populate the post data
+    const likes = await Like.find({ user_id: userId, type: "down" }).populate({
+      path: "post_id",
+      populate: {
+        path: "author_id",
+        select: "username profilePicture",
+      },
+    });
+
+    // Extract the posts from the likes
+    const downvotedPosts = likes.map((like) => like.post_id);
+
+    res.status(200).json({ posts: downvotedPosts });
+  } catch (error) {
+    console.error("Error fetching downvoted posts:", error.message);
+    res.status(500).json({ message: "Server error while fetching downvoted posts." });
+  }
+};
