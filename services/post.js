@@ -220,11 +220,11 @@ export const votePost = async function (req, res) {
 };
 
 export const getUpvotesByUser = async function (req, res) {
-  const { userId } = req.params;
+  const { id } = req.params;
 
   try {
     // Find all likes of type "up" by the user and populate the post data
-    const likes = await Like.find({ user_id: userId, type: "up" }).populate({
+    const likes = await Like.find({ user_id: id, type: "up" }).populate({
       path: "post_id",
       populate: {
         path: "author_id",
@@ -243,11 +243,11 @@ export const getUpvotesByUser = async function (req, res) {
 };
 
 export const getDownvotesByUser = async function (req, res) {
-  const { userId } = req.params;
+  const { id } = req.params;
 
   try {
     // Find all likes of type "up" by the user and populate the post data
-    const likes = await Like.find({ user_id: userId, type: "down" }).populate({
+    const likes = await Like.find({ user_id: id, type: "down" }).populate({
       path: "post_id",
       populate: {
         path: "author_id",
