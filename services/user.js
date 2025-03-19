@@ -2,9 +2,9 @@ import User from "../models/User.js";
 import asyncHandler from "express-async-handler";
 
 export const userSignUp = asyncHandler(async (req, res) => {
-  const { user_email, user_password, user_name } = req.body;
+  const { user_email, user_password, user_name, user_tag } = req.body;
 
-  if (!user_email || !user_password || !user_name) {
+  if (!user_email || !user_password || !user_name || !user_tag) {
     res.status(400).json({ message: "All fields must be filled." });
     return;
   }
@@ -15,13 +15,13 @@ export const userSignUp = asyncHandler(async (req, res) => {
     throw new Error("Email is already in use.");
   }
 
-  const usernameExists = await User.findOne({ user_name });
-  if (usernameExists) {
-    res.status(400).json({ message: "Username is already taken." });
-    throw new Error("Username is already taken.");
+  const usertagExists = await User.findOne({ user_tag });
+  if (usertagExists) {
+    res.status(400).json({ message: "Usertag is already taken." });
+    throw new Error("Usertag is already taken.");
   }
 
-  const newUser = await User.create({ user_email, user_password, user_name });
+  const newUser = await User.create({ user_email, user_password, user_name, user_tag });
 
   // NOTE: password is included for testing (temporary)
   res.status(201).json({
@@ -29,6 +29,7 @@ export const userSignUp = asyncHandler(async (req, res) => {
     user: {
       email: newUser.user_email,
       username: newUser.user_name,
+      usertag: newUser.user_tag,
       password: newUser.user_password,
       _id: newUser._id,
       createdAt: newUser.createdAt,
