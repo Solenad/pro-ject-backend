@@ -15,14 +15,13 @@ export const createPost = async function (req, res) {
       title: title,
       deadline: deadline,
       created_at: created_at,
-      created_by: created_by,
       content: content,
       image: image || null,
     });
 
     const saved_post = await new_post.save();
     
-    const user = await User.findById(created_by);
+    const user = await User.findById(saved_post.author_id);
     user.post_ids.push(saved_post._id);
     await user.save();
 
