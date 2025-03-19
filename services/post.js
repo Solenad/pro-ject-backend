@@ -8,9 +8,10 @@ import Comments from "../models/Comment.js";
 
 export const createPost = async function (req, res) {
   try {
-    const { title, deadline, created_at, created_by, content, image } = req.body;
+    const { user_id, title, deadline, created_at, content, image } = req.body;
 
     const new_post = new Post({
+      author_id: user_id.userId,
       title: title,
       deadline: deadline,
       created_at: created_at,
@@ -18,7 +19,7 @@ export const createPost = async function (req, res) {
       content: content,
       image: image || null,
     });
-    console.log(created_by)
+
     const saved_post = await new_post.save();
     
     const user = await User.findById(created_by);
@@ -37,6 +38,7 @@ export const getPosts = async function (req, res) {
   const postsPerPage = 5;
 
   const posts = await Post.find({})
+    .populate("author_id", "user_name")
     .skip(page * postsPerPage)
     .limit(postsPerPage);
 
@@ -181,7 +183,7 @@ export const votePost = async function (req, res) {
       upd_post = await Post.findByIdAndUpdate(
         id,
         { $inc: { [type == "up" ? "upvotes" : "downvotes"]: 1 } },
-        { new: true }
+        { new: true },
       );
     } else if (type == already_liked.type) {
       await Like.deleteOne({ _id: already_liked._id });
@@ -189,7 +191,7 @@ export const votePost = async function (req, res) {
       upd_post = await Post.findByIdAndUpdate(
         id,
         { $inc: { [type === "up" ? "upvotes" : "downvotes"]: -1 } },
-        { new: true }
+        { new: true },
       );
     } else {
       await Like.findByIdAndUpdate(already_liked._id, { type });
@@ -202,7 +204,7 @@ export const votePost = async function (req, res) {
             downvotes: type == "down" ? 1 : type == "up" ? -1 : 0,
           },
         },
-        { new: true }
+        { new: true },
       );
     }
 

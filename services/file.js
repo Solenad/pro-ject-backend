@@ -8,6 +8,7 @@ import "dotenv/config";
  * @function uploadSingleImage()
  */
 export const uploadSingleImage = async function (req, res) {
+  console.log(req.file);
   const file_name = req.file.originalname.split(".")[0];
   const date = new Date(Date.now())
     .toLocaleDateString("en-US", {
@@ -41,7 +42,7 @@ export const uploadSingleImage = async function (req, res) {
           } else {
             resolve(upload_result);
           }
-        }
+        },
       );
       upload_stream.end(req.file.buffer);
     });
