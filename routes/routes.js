@@ -21,6 +21,7 @@ import {
   userSignUp,
   userLogIn,
   deleteUser,
+  editUser,
   getUser,
   getUsers,
 } from "../services/user.js";
@@ -51,6 +52,7 @@ router.post("/user/login", userLogIn); // from auth as well
 router.get("/user", getUsers); // get all users
 router.get("/user/:id", getUser);
 router.delete("/user/delete/:id", deleteUser);
+router.put("/user/edit/:id", editUser);
 router.get("/user/:id/comments", getCommentsByUser); //gets comments by user
 router.get("/user/:id/posts", getPostsByUser);
 router.get("/user/:id/upvotes", getUpvotesByUser);
