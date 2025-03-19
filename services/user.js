@@ -134,8 +134,8 @@ export const getUser = async function (req, res) {
   }
 };
 
-export const editUser = async function (req,res) {
-  try{
+export const editUser = async function (req, res) {
+  try {
     const { id } = req.params;
     const newData = req.body;
 
@@ -146,13 +146,13 @@ export const editUser = async function (req,res) {
     }
 
     const edited_user = await User.findByIdAndUpdate(id, newData, {
-          new: true,
-        });
-    
+      new: true,
+    });
+
     res.status(200).json({ message: "User edited.", edited_post });
   } catch (error) {
     return res
       .status(500)
       .json({ message: "Error editing user.", error: error.message });
   }
-}
+};
