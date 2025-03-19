@@ -227,7 +227,7 @@ export const getUpvotesByUser = async function (req, res) {
 
   try {
     // Find all likes of type "up" by the user and populate the post data
-    const likes = await Like.find({ user_id: id }).populate({
+    const likes = await Like.find({ user_id: id, type: "up" }).populate({
       path: "post_id",
       populate: {
         path: "author_id",
