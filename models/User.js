@@ -6,7 +6,8 @@ const userSchema = mongoose.Schema(
   {
     user_email: { type: String, required: true },
     user_password: { type: String, required: true },
-    user_name: { type: String, required: true }, // tag => user_name
+    user_name: { type: String, required: true },
+    user_tag: { type: String, required: true },
     user_bio: { type: String, required: false, default: "Enter bio" },
     is_admin: { type: Boolean, required: false, default: false },
     post_ids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
