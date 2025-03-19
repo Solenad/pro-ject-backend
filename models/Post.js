@@ -5,9 +5,10 @@
 import mongoose from "mongoose";
 
 const postSchema = mongoose.Schema({
-  /*author_id: {
+  author_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   }, //must be verified user to post */
   title: { type: String, required: true },
   deadline: {
