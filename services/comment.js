@@ -191,7 +191,7 @@ export const upvoteComment = asyncHandler(async (req, res) => {
   const updatedComment = await Comments.findByIdAndUpdate(
     comment_id,
     { $inc: { upvotes: 1 } }, // Increment upvotes by 1
-    { new: true }
+    { new: true },
   );
 
   if (!updatedComment) {
@@ -211,7 +211,7 @@ export const downvoteComment = asyncHandler(async (req, res) => {
   const updatedComment = await Comments.findByIdAndUpdate(
     comment_id,
     { $inc: { downvotes: 1 } }, // Increment downvotes by 1
-    { new: true }
+    { new: true },
   );
 
   if (!updatedComment) {
@@ -255,20 +255,20 @@ export const getAllNumComments = async (req, res) => {
 };
 
 export const getCommentsByUser = async (req, res) => {
-  const { user_id } = req.params;
+  const { id } = req.params;
 
   try {
     // Log the incoming user_id
-    console.log("Received user_id:", user_id);
+    console.log("Received user_id:", id);
 
     // Try using both possible field names for the query
-    const comments = await Comments.find({ userId: user_id });
+    const comments = await Comments.find({ user_id: id });
 
     // Log the result to see what was found
     console.log("Fetched comments:", comments);
 
     if (comments.length === 0) {
-      console.warn("No comments found for user:", user_id);
+      console.warn("No comments found for user:", id);
       return res
         .status(404)
         .json({ message: "No comments found for the specified user." });

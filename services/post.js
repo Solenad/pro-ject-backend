@@ -132,10 +132,11 @@ export const deletePost = async function (req, res) {
 };
 
 export const getPostsByUser = async function (req, res) {
+  const { id } = req.params;
   try {
     const page = Number(req.query.p) || 0;
     const postsPerPage = 5;
-    const userId = req.query.userId; // Get userId from query parameters
+    const userId = id; // Get userId from query parameters
 
     // Build the query object
     const query = userId ? { userId } : {};
