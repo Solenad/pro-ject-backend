@@ -3,6 +3,8 @@
 // - GET: /posts
 import Post from "../models/Post.js";
 import Like from "../models/Like.js";
+import User from "../models/User.js";
+import Comments from "../models/Comment.js";
 
 export const createPost = async function (req, res) {
   try {
@@ -13,11 +15,16 @@ export const createPost = async function (req, res) {
       title: title,
       deadline: deadline,
       created_at: created_at,
+      created_by: created_by,
       content: content,
       image: image || null,
     });
 
     const saved_post = await new_post.save();
+    
+    const user = await User.findById(created_by);
+    user.post_ids.push(saved_post._id);
+    await user.save();
 
     res.status(201).json(saved_post);
   } catch (err) {
@@ -99,6 +106,21 @@ export const deletePost = async function (req, res) {
     if (!post) {
       return res.status(404).json({ message: "Post is not found." });
     }
+
+    if (Array.isArray(post.comment_ids)) {
+      await Comments.updateMany(
+        { _id: { $in: post.comment_ids } },
+        { $unset: { post_id: "" } }
+      );
+    } else {
+      await Comments.findByIdAndUpdate(post.comment_id, {
+        $unset: { post_id: "" },
+      });
+    }
+    
+      await User.findByIdAndUpdate(post.user_id, {
+        $pull: { post_ids: id },
+      });
 
     await Post.findByIdAndDelete(id);
 

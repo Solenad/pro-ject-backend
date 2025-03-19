@@ -4,7 +4,7 @@ import Post from "../models/Post.js";
 import User from "../models/User.js";
 import mongoose from "mongoose";
 
-// Drop the index
+/* Drop the index
 (async () => {
   try {
     await Comments.collection.dropIndex("comment_id_1");
@@ -15,6 +15,7 @@ import mongoose from "mongoose";
     }
   }
 })();
+*/
 
 // comment on a post
 export const addParentComment = asyncHandler(async (req, res) => {
@@ -30,7 +31,11 @@ export const addParentComment = asyncHandler(async (req, res) => {
     content,
   });
 
-  await newComment.save();
+  const saved_comment = await newComment.save();
+
+  const user = await User.findById(user_id);
+  user.comment_ids.push(saved_comment._id);
+  await user.save();
 
   res.status(201).json({
     message: "Comment added successfully",
@@ -113,16 +118,27 @@ export const getReplyComments = asyncHandler(async (req, res) => {
 
 // edit a comment by id
 export const editComment = asyncHandler(async (req, res) => {
-  const { comment_id } = req.params; // change to body (depends)
+  const { comment_id } = req.params;
   const { user_id, content } = req.body;
 
+  if (!user_id) {
+    return res.status(400).json({ message: "User ID is required" });
+  }
+
+  if (!content || content.trim() === "") {
+    return res.status(400).json({ message: "Content cannot be empty" });
+  }
+
   const comment = await Comments.findById(comment_id);
+
+  console.log("Request user_id:", user_id);
+  console.log("Comment owner user_id:", comment.user_id.toString());
 
   if (!comment) {
     return res.status(404).json({ message: "Comment not found" });
   }
 
-  if (comment.user_id.toString() !== user_id) {
+  if (String(comment.user_id) !== String(user_id)) {
     return res
       .status(403)
       .json({ message: "Unauthorized to edit this comment" });
@@ -253,7 +269,9 @@ export const getCommentsByUser = async (req, res) => {
 
     if (comments.length === 0) {
       console.warn("No comments found for user:", user_id);
-      return res.status(404).json({ message: "No comments found for the specified user." });
+      return res
+        .status(404)
+        .json({ message: "No comments found for the specified user." });
     }
 
     res.status(200).json(comments);
