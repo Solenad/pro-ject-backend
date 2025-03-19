@@ -167,15 +167,18 @@ export const getPostsByUser = async function (req, res) {
 export const votePost = async function (req, res) {
   try {
     const { id } = req.params;
-    const { type } = req.body;
+    const { type, user_id } = req.body;
     const post = await Post.findById(id);
 
-    const already_liked = await Like.findOne({ post_id: post.id });
+    const already_liked = await Like.findOne({
+      post_id: post.id,
+      user_id: user_id,
+    });
 
     let upd_post;
 
     if (!already_liked) {
-      await Like.create({ post_id: id, type });
+      await Like.create({ post_id: id, user_id, type });
 
       upd_post = await Post.findByIdAndUpdate(
         id,
