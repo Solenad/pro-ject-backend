@@ -14,11 +14,12 @@ const userSchema = mongoose.Schema(
     shared_post_ids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     upvoted_post_ids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     downvoted_post_ids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
+    following_ids: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     comment_ids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comments" }],
   },
   {
     timestamps: true, // record when signing up
-  }
+  },
 );
 
 export default mongoose.model("User", userSchema);

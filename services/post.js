@@ -20,7 +20,7 @@ export const createPost = async function (req, res) {
     });
 
     const saved_post = await new_post.save();
-    
+
     const user = await User.findById(saved_post.author_id);
     user.post_ids.push(saved_post._id);
     await user.save();
@@ -109,17 +109,17 @@ export const deletePost = async function (req, res) {
     if (Array.isArray(post.comment_ids)) {
       await Comments.updateMany(
         { _id: { $in: post.comment_ids } },
-        { $unset: { post_id: "" } }
+        { $unset: { post_id: "" } },
       );
     } else {
       await Comments.findByIdAndUpdate(post.comment_id, {
         $unset: { post_id: "" },
       });
     }
-    
-      await User.findByIdAndUpdate(post.user_id, {
-        $pull: { post_ids: id },
-      });
+
+    await User.findByIdAndUpdate(post.user_id, {
+      $pull: { post_ids: id },
+    });
 
     await Post.findByIdAndDelete(id);
 
@@ -132,18 +132,21 @@ export const deletePost = async function (req, res) {
 };
 
 export const getPostsByUser = async function (req, res) {
+  const { id } = req.params;
   try {
     const page = Number(req.query.p) || 0;
     const postsPerPage = 5;
-    const userId = req.query.userId; // Get userId from query parameters
+    const userId = id; // Get userId from query parameters
 
     // Build the query object
     const query = userId ? { userId } : {};
 
     // Get filtered and paginated posts
-    const posts = await Post.find(query)
+    const posts = await Post.find({ author_id: id })
       .skip(page * postsPerPage)
       .limit(postsPerPage);
+
+    console.log(posts);
 
     // Check if posts were found
     if (!posts || posts.length === 0) {
@@ -167,15 +170,18 @@ export const getPostsByUser = async function (req, res) {
 export const votePost = async function (req, res) {
   try {
     const { id } = req.params;
-    const { type } = req.body;
+    const { type, user_id } = req.body;
     const post = await Post.findById(id);
 
-    const already_liked = await Like.findOne({ post_id: post.id });
+    const already_liked = await Like.findOne({
+      post_id: post.id,
+      user_id: user_id,
+    });
 
     let upd_post;
 
     if (!already_liked) {
-      await Like.create({ post_id: id, type });
+      await Like.create({ post_id: id, user_id, type });
 
       upd_post = await Post.findByIdAndUpdate(
         id,
@@ -232,13 +238,17 @@ export const getUpvotesByUser = async function (req, res) {
       },
     });
 
+    console.log(likes);
+
     // Extract the posts from the likes
     const upvotedPosts = likes.map((like) => like.post_id);
 
     res.status(200).json({ posts: upvotedPosts });
   } catch (error) {
     console.error("Error fetching upvoted posts:", error.message);
-    res.status(500).json({ message: "Server error while fetching upvoted posts." });
+    res
+      .status(500)
+      .json({ message: "Server error while fetching upvoted posts." });
   }
 };
 
@@ -261,6 +271,8 @@ export const getDownvotesByUser = async function (req, res) {
     res.status(200).json({ posts: downvotedPosts });
   } catch (error) {
     console.error("Error fetching downvoted posts:", error.message);
-    res.status(500).json({ message: "Server error while fetching downvoted posts." });
+    res
+      .status(500)
+      .json({ message: "Server error while fetching downvoted posts." });
   }
 };

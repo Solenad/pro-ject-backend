@@ -9,7 +9,7 @@ import {
   votePost,
   getPostsByUser,
   getUpvotesByUser,
-  getDownvotesByUser
+  getDownvotesByUser,
 } from "../services/post.js";
 import {
   uploadSingleImage,
@@ -47,8 +47,8 @@ router.get("/test", function (req, res) {
 });
 
 //user endpoints
-router.post("/user/signup", userSignUp); // from createUser (user) to userSignUp (transfered from auth)
-router.post("/user/login", userLogIn); // from auth as well
+router.post("/user/signup", userSignUp); // from createUser (user) to userSignUp (transfered from auth) router.post("/user/login", userLogIn); // from auth as well
+router.post("/user/login", userLogIn);
 router.get("/user", getUsers); // get all users
 router.get("/user/:id", getUser);
 router.delete("/user/delete/:id", deleteUser);
@@ -87,7 +87,5 @@ router.post("/vote/:id", votePost);
 router.post("/upload", upload.single("image"), uploadSingleImage);
 router.get("/image/:id", getImageById);
 router.delete("/image/:id", deleteImageById);
-
-
 
 export default router;

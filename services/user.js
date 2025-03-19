@@ -21,7 +21,12 @@ export const userSignUp = asyncHandler(async (req, res) => {
     throw new Error("Usertag is already taken.");
   }
 
-  const newUser = await User.create({ user_email, user_password, user_name, user_tag });
+  const newUser = await User.create({
+    user_email,
+    user_password,
+    user_name,
+    user_tag,
+  });
 
   // NOTE: password is included for testing (temporary)
   res.status(201).json({
@@ -102,10 +107,14 @@ export const deleteUser = asyncHandler(async (req, res) => {
 });
 
 export const getUser = async function (req, res) {
-  try {
-    console.log("Fetching user with ID:", req.params.id); // Debugging line
+  const { id } = req.params;
 
-    const user = await User.findById(req.params.id);
+  console.log("ID: " + id);
+
+  try {
+    console.log("Fetching user with ID:", id); // Debugging line
+
+    const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
