@@ -142,9 +142,11 @@ export const getPostsByUser = async function (req, res) {
     const query = userId ? { userId } : {};
 
     // Get filtered and paginated posts
-    const posts = await Post.find(query)
+    const posts = await Post.find({ author_id: id })
       .skip(page * postsPerPage)
       .limit(postsPerPage);
+
+    console.log(posts);
 
     // Check if posts were found
     if (!posts || posts.length === 0) {
