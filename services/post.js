@@ -140,9 +140,11 @@ export const getPostsByUser = async function (req, res) {
     const query = userId ? { userId } : {};
 
     // Get filtered and paginated posts
-    const posts = await Post.find(query)
-      .skip(page * postsPerPage)
-      .limit(postsPerPage);
+    const posts = await Post.find({ created_by: userId })
+    .populate("author_id", "username profilePicture")
+    .sort({ created_at: -1 })
+    .skip(page * postsPerPage)
+    .limit(postsPerPage);
 
     // Check if posts were found
     if (!posts || posts.length === 0) {
