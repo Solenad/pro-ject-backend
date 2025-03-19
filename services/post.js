@@ -15,14 +15,13 @@ export const createPost = async function (req, res) {
       title: title,
       deadline: deadline,
       created_at: created_at,
-      created_by: created_by,
       content: content,
       image: image || null,
     });
 
     const saved_post = await new_post.save();
-    
-    const user = await User.findById(created_by);
+
+    const user = await User.findById(new_post.author_id);
     user.post_ids.push(saved_post._id);
     await user.save();
 
@@ -110,17 +109,17 @@ export const deletePost = async function (req, res) {
     if (Array.isArray(post.comment_ids)) {
       await Comments.updateMany(
         { _id: { $in: post.comment_ids } },
-        { $unset: { post_id: "" } }
+        { $unset: { post_id: "" } },
       );
     } else {
       await Comments.findByIdAndUpdate(post.comment_id, {
         $unset: { post_id: "" },
       });
     }
-    
-      await User.findByIdAndUpdate(post.user_id, {
-        $pull: { post_ids: id },
-      });
+
+    await User.findByIdAndUpdate(post.user_id, {
+      $pull: { post_ids: id },
+    });
 
     await Post.findByIdAndDelete(id);
 
