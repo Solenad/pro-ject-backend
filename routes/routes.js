@@ -8,6 +8,8 @@ import {
   deletePost,
   votePost,
   getPostsByUser,
+  getUpvotesByUser,
+  getDownvotesByUser
 } from "../services/post.js";
 import {
   uploadSingleImage,
@@ -51,6 +53,8 @@ router.get("/user/:id", getUser);
 router.delete("/user/delete/:id", deleteUser);
 router.get("/user/:id/comments", getCommentsByUser); //gets comments by user
 router.get("/user/:id/posts", getPostsByUser);
+router.get("/user/:id/upvotes", getUpvotesByUser);
+router.get("/user/:id/downvotes", getDownvotesByUser);
 
 // Comment endpoints
 router.get("/comments", getAllComments); // View all comments
