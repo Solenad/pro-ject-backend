@@ -74,6 +74,7 @@ export const userLogIn = asyncHandler(async (req, res) => {
     res.status(200).json({
       message: "Login successful",
       user: req.session.user, // Sends back session-stored user info
+      session_id: req.session.id, // Sends back session ID for debugging
     });
   });
 });
