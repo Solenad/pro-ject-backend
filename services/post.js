@@ -276,3 +276,48 @@ export const getDownvotesByUser = async function (req, res) {
       .json({ message: "Server error while fetching downvoted posts." });
   }
 };
+
+export const getPostBySearch = async function (req, res) {
+  const searchQuery = req.query.q;
+  const page = parseInt(req.query.p) || 0;
+  const postsPerPage = 5;
+  const skip = page * postsPerPage;
+
+  console.log("Search: " + searchQuery);
+
+  if (!searchQuery || typeof searchQuery !== "string") {
+    return res
+      .status(400)
+      .json({ message: "Search query is required and must be a string" });
+  }
+
+  try {
+    const searchFilter = {
+      title: { $regex: searchQuery, $options: "i" },
+    };
+
+    const posts = await Post.find(searchFilter)
+      .populate("author_id", "user_name")
+      .skip(skip)
+      .limit(postsPerPage);
+
+    if (!posts || posts.length === 0) {
+      return res
+        .status(404)
+        .json({ message: `No posts found matching "${searchQuery}"` });
+    }
+
+    const total_posts = await Post.countDocuments(searchFilter);
+    const total_pages = Math.ceil(total_posts / postsPerPage);
+
+    res.status(200).json({
+      posts,
+      total_pages,
+      current_page: Number(page),
+      total_results: total_posts,
+    });
+  } catch (error) {
+    console.error("Error searching posts: ", error.message);
+    res.status(500).json({ message: "Failed to search posts" });
+  }
+};
