@@ -16,7 +16,15 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors());
+
+const corsOptions = {
+  origin: 'https://pro-ject.app.dlsu-lscs.org', 
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 
 mongoose
   .connect(process.env.MONGO_URI, { dbName: process.env.DB_NAME })
