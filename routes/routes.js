@@ -10,6 +10,7 @@ import {
   getPostsByUser,
   getUpvotesByUser,
   getDownvotesByUser,
+  getPostBySearch,
 } from "../services/post.js";
 import {
   uploadSingleImage,
@@ -76,6 +77,7 @@ router.patch("/downvote/:comment_id", downvoteComment); // Downvote a comment
 // posts endpoints
 router.post("/post", createPost);
 router.get("/", getPosts);
+router.get("/search", getPostBySearch);
 router.get("/:id", getPost);
 router.put("/:id", editPost);
 router.delete("/:id", deletePost);
