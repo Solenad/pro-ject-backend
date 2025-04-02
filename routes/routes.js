@@ -18,14 +18,9 @@ import {
   deleteImageById,
 } from "../services/file.js";
 
-import {
-  userSignUp,
-  userLogIn,
-  deleteUser,
-  editUser,
-  getUser,
-  getUsers,
-} from "../services/user.js";
+import { deleteUser, editUser, getUser, getUsers } from "../services/user.js";
+
+import { userSignUp, userLogIn } from "../services/auth.js";
 
 import {
   addParentComment,

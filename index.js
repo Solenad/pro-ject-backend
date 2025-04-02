@@ -17,11 +17,12 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// remove localhost after testing
 const corsOptions = {
-  origin: 'https://pro-ject.app.dlsu-lscs.org', 
+  origin: ["http://localhost:5173", "https://pro-ject.app.dlsu-lscs.org"],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
