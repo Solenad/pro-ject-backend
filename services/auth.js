@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import asyncHandler from "express-async-handler";
 import mongoose from "mongoose";
+import bcrypt from 'bcrypt'
 
 export const userSignUp = asyncHandler(async (req, res) => {
   const { user_email, user_password, user_name, user_tag } = req.body;
@@ -53,7 +54,7 @@ export const userLogIn = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ user_email });
 
-  if (!user || user.user_password !== user_password) {
+  if (!user || bcrypt.compareSync(user.user_password,user_password)) {
     res.status(401).json({ message: "Invalid email or password!" });
     throw new Error("Invalid email or password!");
   }
