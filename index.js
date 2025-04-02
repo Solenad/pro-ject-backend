@@ -57,8 +57,6 @@ app.use(
 app.use((req, res, next) => {
   if (req.session) {
     req.session.visited = true;
-    console.log("Session test:", req.session);
-    console.log("Session ID:", req.session.id);
   } else {
     console.log("No session found.");
   }

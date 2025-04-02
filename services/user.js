@@ -119,11 +119,7 @@ export const deleteUser = asyncHandler(async (req, res) => {
 export const getUser = async function (req, res) {
   const { id } = req.params;
 
-  console.log("ID: " + id);
-
   try {
-    console.log("Fetching user with ID:", id); // Debugging line
-
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
