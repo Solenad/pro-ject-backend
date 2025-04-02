@@ -35,11 +35,30 @@ export const createPost = async function (req, res) {
 export const getPosts = async function (req, res) {
   const page = req.query.p || 0;
   const postsPerPage = 5;
+  const filterType = req.query.sort || "home"
 
-  const posts = await Post.find({})
-    .populate("author_id", "user_name")
+  let query = {};
+
+  if (filterType === "popular") {
+    query = {}; // No filter, just sort by upvotes
+  } else if (filterType === "inProgress") {
+    query = { "deadline.progress": "In Progress" };
+  } else if (filterType === "finished") {
+    query = { "deadline.progress": "Finished" };
+  }
+
+  let postQuery = Post.find(query).populate("author_id", "user_name");
+
+  if (filterType === "popular") {
+    postQuery = postQuery.sort({ upvotes: -1, comment_ids: -1 }); // Sort by upvotes/comments
+  } else {
+    postQuery = postQuery.sort({ created_at: -1 }); // Default: Sort by latest
+  }
+
+  const posts = await postQuery
     .skip(page * postsPerPage)
     .limit(postsPerPage);
+
 
   if (!posts) {
     return res
