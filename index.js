@@ -3,12 +3,13 @@
 //    - setup express-session
 //    - setup passport
 
-import express from "express";
+import express, { request } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import "dotenv/config";
 import router from "./routes/routes.js";
 import mongoose from "mongoose";
+import session from "express-session";
 
 // our express server instance
 const app = express();
@@ -38,6 +39,31 @@ mongoose.connection.once("open", async function () {
 });
 
 app.options("*", cors());
+
+// for implmentation of session test
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Set to true if using HTTPS
+      maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
+    },
+  })
+);
+
+app.use((req, res, next) => {
+  if (req.session) {
+    req.session.visited = true;
+    console.log("Session test:", req.session);
+    console.log("Session ID:", req.session.id);
+  } else {
+    console.log("No session found.");
+  }
+  next();
+});
+
 app.use("/", router);
 
 const PORT = process.env.PORT || 3000;

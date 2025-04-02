@@ -42,7 +42,6 @@ export const userSignUp = asyncHandler(async (req, res) => {
   });
 });
 
-// from recent auth
 export const userLogIn = asyncHandler(async (req, res) => {
   const { user_email, user_password } = req.body;
 
@@ -58,13 +57,24 @@ export const userLogIn = asyncHandler(async (req, res) => {
     throw new Error("Invalid email or password!");
   }
 
-  res.status(200).json({
-    message: "Login successful",
-    user: {
+  // Regenerate session ID for security
+  req.session.regenerate((err) => {
+    if (err) {
+      return res.status(500).json({ message: "Session regeneration failed" });
+    }
+
+    console.log("Session ID after regeneration:", req.session.id); // Debugging line
+    // Store user data in session
+    req.session.user = {
       email: user.user_email,
       username: user.user_name,
       _id: user._id,
-    },
+    };
+
+    res.status(200).json({
+      message: "Login successful",
+      user: req.session.user, // Sends back session-stored user info
+    });
   });
 });
 
