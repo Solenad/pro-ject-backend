@@ -150,11 +150,10 @@ export const editComment = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Comment updated successfully", comment });
 });
 
-// delete a comment by id permanently
 export const deleteComment = asyncHandler(async (req, res) => {
   const { comment_id } = req.params;
 
-  // remove after checking
+  // Remove after checking
   if (!mongoose.Types.ObjectId.isValid(comment_id)) {
     return res.status(400).json({ message: "Invalid Comment ID" });
   }
@@ -170,6 +169,17 @@ export const deleteComment = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "Comment not found" });
   }
 
+  // Check if the comment is a reply and update its parent comment's replyCount
+  if (comment.parent_comment_id) {
+    const parentComment = await Comments.findById(comment.parent_comment_id);
+    if (parentComment) {
+      // Decrement the reply count for the parent comment
+      parentComment.replies_count = Math.max(0, parentComment.replies_count - 1);
+      await parentComment.save();
+    }
+  }
+
+  // Remove the comment from the post and user
   await Post.findByIdAndUpdate(comment.post_id, {
     $pull: { comment_ids: comment_id },
   });
@@ -178,6 +188,7 @@ export const deleteComment = asyncHandler(async (req, res) => {
     $pull: { comment_ids: comment_id },
   });
 
+  // Delete the comment
   await Comments.findByIdAndDelete(comment_id);
 
   res.status(200).json({ message: "Comment deleted successfully" });
