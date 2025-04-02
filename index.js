@@ -3,13 +3,14 @@
 //    - setup express-session
 //    - setup passport
 
-import express, { request } from "express";
+import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import "dotenv/config";
 import router from "./routes/routes.js";
 import mongoose from "mongoose";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 
 // our express server instance
 const app = express();
@@ -25,12 +26,15 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
-app.use(cors(corsOptions));
-
+// app.use(cors(corsOptions));
 mongoose
   .connect(process.env.MONGO_URI, { dbName: process.env.DB_NAME })
   .then(function () {
     console.log(`Connected to MongoDB: ${mongoose.connection.name}`);
+  })
+  .catch(function (err) {
+    console.error("MongoDB connection error:", err.message);
+    process.exit(1); // Exit the process if DB connection fails
   });
 
 mongoose.connection.once("open", async function () {
@@ -47,7 +51,8 @@ mongoose.connection.once("open", async function () {
   }
 });
 
-app.options("*", cors());
+// commented since we already have the cors middleware above
+// app.options("*", cors());
 
 // start testing session
 // for implmentation of session test
@@ -56,25 +61,35 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      dbName: process.env.DB_NAME,
+      ttl: 60 * 60, // 1 hour session expiry
+    }),
     cookie: {
-      secure: true, // Set to true if using HTTPS
+      secure: process.env.NODE_ENV === "production", // will evaluate to true if in production
       maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
     },
   })
 );
 
+// move cors here (below session middleware) to allow credentials to be sent
+app.use(cors(corsOptions));
+
 app.use((req, res, next) => {
-  if (req.session) {
-    req.session.visited = true;
+  if (!req.session) {
+    console.warn("Session is not initialized.");
   } else {
-    console.log("No session found.");
+    req.session.visited = true;
+    if (process.env.NODE_ENV !== "production") {
+      console.log(`Session active for user: ${req.session.id}`);
+    }
   }
   next();
 });
-
 // end session test
 
-app.use("/", router);
+app.use("/", router); // router contains all the routes
 
 const PORT = process.env.PORT || 3000;
 
