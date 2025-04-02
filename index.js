@@ -40,6 +40,7 @@ mongoose.connection.once("open", async function () {
 
 app.options("*", cors());
 
+// start testing session
 // for implmentation of session test
 app.use(
   session({
@@ -63,6 +64,8 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+// end session test
 
 app.use("/", router);
 
