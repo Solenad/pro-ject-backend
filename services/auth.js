@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import asyncHandler from "express-async-handler";
+import mongoose from "mongoose";
 
 export const userSignUp = asyncHandler(async (req, res) => {
   const { user_email, user_password, user_name, user_tag } = req.body;
@@ -78,3 +79,28 @@ export const userLogIn = asyncHandler(async (req, res) => {
     });
   });
 });
+
+export async function getAllSessions() {
+  try {
+    // Access the session collection in MongoDB
+    const sessionCollection = mongoose.connection.collection("sessions");
+
+    // Fetch all session documents
+    const sessions = await sessionCollection.find({}).toArray();
+
+    // If no sessions found
+    if (sessions.length === 0) {
+      console.log("No sessions found.");
+    } else {
+      console.log(`Fetched ${sessions.length} session(s):`);
+      sessions.forEach((session, index) => {
+        console.log(`Session ${index + 1}:`, session);
+      });
+    }
+
+    return sessions;
+  } catch (error) {
+    console.error("Error fetching sessions:", error.message);
+    throw error; // You can handle this further based on your needs
+  }
+}

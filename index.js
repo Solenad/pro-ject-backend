@@ -77,10 +77,8 @@ app.use(
 app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
-  if (!req.session) {
-    console.warn("Session is not initialized.");
-  } else {
-    req.session.visited = true;
+  // Only log the session if it's necessary
+  if (req.session && req.session.user) {
     if (process.env.NODE_ENV !== "production") {
       console.log(`Session active for user: ${req.session.id}`);
     }

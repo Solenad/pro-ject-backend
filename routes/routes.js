@@ -20,7 +20,7 @@ import {
 
 import { deleteUser, editUser, getUser, getUsers } from "../services/user.js";
 
-import { userSignUp, userLogIn } from "../services/auth.js";
+import { userSignUp, userLogIn, getAllSessions } from "../services/auth.js";
 
 import {
   addParentComment,
@@ -41,6 +41,9 @@ const router = express.Router();
 router.get("/test", function (req, res) {
   res.status(200).json("Hello, world!");
 });
+
+// get sessions
+router.get("/session/all", getAllSessions);
 
 //user endpoints
 router.post("/user/signup", userSignUp); // from createUser (user) to userSignUp (transfered from auth) router.post("/user/login", userLogIn); // from auth as well
